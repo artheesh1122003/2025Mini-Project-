@@ -1,0 +1,24 @@
+/* Live Clock Styles */
+.live-clock {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--primary-color);
+    margin-top: 0.5rem;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    letter-spacing: 2px;
+}
+
+/* Today Button */
+.today-btn {
+    width: auto !important;
+    padding: 0 0.8rem;
+    margin: 0 0.25rem;
+    background: rgba(129, 140, 248, 0.2);
+    border: 1px solid rgba(129, 140, 248, 0.3);
+}
+
+.today-btn:hover {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+}

@@ -1,0 +1,97 @@
+/* Add these to the end of c:/C/style.css */
+
+.search-container {
+    margin-bottom: 1.5rem;
+    padding: 0 0.5rem;
+}
+
+.input-group {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.input-group input {
+    flex-grow: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.8rem;
+    color: var(--text-main);
+    font-family: var(--font-main);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.input-group button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.input-group button:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+/* Reminder specific styles */
+.reminder-section {
+    animation: fadeIn 0.3s ease;
+}
+
+.active-reminder {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(192, 132, 252, 0.1);
+    /* accent color low opacity */
+    border: 1px solid var(--accent-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: var(--text-main);
+}
+
+.active-reminder i {
+    color: var(--accent-color);
+}
+
+.delete-btn {
+    margin-left: auto;
+    background: transparent !important;
+    color: #ef4444 !important;
+    /* Red for delete */
+    padding: 0.5rem !important;
+}
+
+.delete-btn:hover {
+    background: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Day with reminder indicator */
+.days div.has-reminder::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    width: 4px;
+    height: 4px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    box-shadow: 0 0 4px var(--accent-color);
+}
+
+/* Date Input Customization for dark theme */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
