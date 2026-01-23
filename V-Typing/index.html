@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velocity Type | Master Your speed</title>
+    <meta name="description"
+        content="A premium typing speed test and curriculum to improve your words per minute and accuracy.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js for progress visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="app-container">
+        <!-- Auth View (Login/Signup) -->
+        <section id="view-login" class="view">
+            <div class="auth-wrapper">
+                <div class="auth-card premium-card">
+                    <div class="auth-header">
+                        <div class="auth-logo">
+                            <span class="logo-icon">V</span>
+                        </div>
+                        <h2>Welcome Back</h2>
+                        <p>Sign in to track your typing progress</p>
+                    </div>
+
+                    <form id="login-form" class="auth-form">
+                        <div class="input-group-premium">
+                            <label>Email Address</label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">✉️</span>
+                                <input type="email" placeholder="name@example.com" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group-premium">
+                            <label>Password</label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">🔒</span>
+                                <input type="password" placeholder="••••••••" required>
+                            </div>
+                        </div>
+
+                        <div class="auth-actions">
+                            <label class="remember-me">
+                                <input type="checkbox"> <span>Remember for 30 days</span>
+                            </label>
+                            <a href="#" class="forgot-link">Forgot password?</a>
+                        </div>
+
+                        <button type="submit" id="login-btn-submit" class="auth-btn-primary">Sign In</button>
+                    </form>
+
+                    <div class="auth-divider">
+                        <span>or continue with</span>
+                    </div>
+
+                    <div class="social-auth">
+                        <button class="social-btn"><span class="s-icon">G</span> Google</button>
+                        <button class="social-btn"><span class="s-icon">GitHub</span> GitHub</button>
+                    </div>
+
+                    <p class="auth-footer">
+                        Don't have an account? <a href="#" id="show-signup">Sign up for free</a>
+                    </p>
+                </div>
+
+                <div class="auth-visual-side">
+                    <div class="visual-content">
+                        <div class="v-badge">NEW v2.0</div>
+                        <h1>Type at the Speed of Sight.</h1>
+                        <p>Join 10,000+ students mastering the art of professional touch typing with Velocity.</p>
+                        <div class="mini-features">
+                            <div class="feat"><span>✓</span> Real-time WPM</div>
+                            <div class="feat"><span>✓</span> Accuracy Tracking</div>
+                            <div class="feat"><span>✓</span> Master Guide</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main App Content (Hidden until auth) -->
+        <div id="app-main-content" class="hidden">
+            <nav class="top-nav">
+                <div class="nav-container">
+                    <div class="logo">
+                        <span class="logo-icon">⚡</span>
+                        <h1>Velocity<span>Type</span></h1>
+                    </div>
+                    <div class="nav-links">
+                        <button class="nav-btn active" data-view="lessons">Lessons</button>
+                        <button class="nav-btn" data-view="tests">Tests</button>
+                        <button class="nav-btn" data-view="progress">Progress</button>
+                        <button class="nav-btn" data-view="guide">Guide</button>
+                        <button class="nav-btn" data-view="profile">Profile</button>
+                    </div>
+                    <div class="nav-actions">
+                        <button id="sound-btn" class="icon-btn" title="Toggle Sound">
+                            <svg class="sound-on" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            </svg>
+                            <svg class="sound-off hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                                <line x1="23" y1="9" x2="17" y2="15"></line>
+                                <line x1="17" y1="9" x2="23" y2="15"></line>
+                            </svg>
+                        </button>
+                        <div class="user-stats-minimal">
+                            <span class="xp-label" id="user-level-label">Level 1</span>
+                            <div class="xp-bar-mini">
+                                <div class="xp-fill" id="xp-fill-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <main class="content-wrapper">
+                <!-- Lessons Dashboard View -->
+                <section id="view-lessons" class="view">
+                    <div class="dashboard-header">
+                        <div class="breadcrumb">Learn to Type > <span id="current-category">Beginner</span></div>
+                        <div class="category-selector">
+                            <select id="curriculum-select">
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="units-wrapper" id="units-wrapper">
+                        <!-- Units and lessons will be injected here by JS -->
+                    </div>
+                </section>
+
+                <!-- Tests Dashboard View -->
+                <section id="view-tests" class="view hidden">
+                    <div class="dashboard-header">
+                        <div class="breadcrumb">Typing Tests > <span>Selection</span></div>
+                        <h2>Speed Tests</h2>
+                    </div>
+
+                    <p class="section-desc">Test your typing speed with professional timed assessments.</p>
+
+                    <div class="tests-grid">
+                        <div class="test-card-premium">
+                            <div class="test-info">
+                                <h3>1 Minute Test</h3>
+                                <p>Quick evaluation of your current WPM.</p>
+                            </div>
+                            <div class="test-meta">
+                                <span class="test-duration">60s</span>
+                                <button class="start-test-btn" onclick="startTest(60)">Start Test</button>
+                            </div>
+                        </div>
+                        <div class="test-card-premium">
+                            <div class="test-info">
+                                <h3>3 Minute Test</h3>
+                                <p>Deep dive into your typing endurance.</p>
+                            </div>
+                            <div class="test-meta">
+                                <span class="test-duration">180s</span>
+                                <button class="start-test-btn" onclick="startTest(180)">Start Test</button>
+                            </div>
+                        </div>
+                        <div class="test-card-premium">
+                            <div class="test-info">
+                                <h3>5 Minute Test</h3>
+                                <p>Professional assessment for certification preparation.</p>
+                            </div>
+                            <div class="test-meta">
+                                <span class="test-duration">300s</span>
+                                <button class="start-test-btn" onclick="startTest(300)">Start Test</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Typing Practice/Test View -->
+                <section id="view-typing" class="view hidden">
+                    <div class="practice-header">
+                        <div class="practice-info">
+                            <button id="back-to-lessons" class="back-link">← Back to Lessons</button>
+                            <h2 id="practice-title">J, F, and Space</h2>
+                        </div>
+                        <div class="live-stats">
+                            <div class="live-stat">
+                                <span class="label">WPM</span>
+                                <span id="wpm" class="value">0</span>
+                            </div>
+                            <div class="live-stat">
+                                <span class="label">ACC</span>
+                                <span id="accuracy" class="value">100%</span>
+                            </div>
+                            <div class="live-stat" id="timer-container">
+                                <span class="label">TIME</span>
+                                <span id="timer" class="value">30</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="typing-container">
+                        <div class="typing-area">
+                            <div class="progress-container">
+                                <div id="progress-bar" class="progress-bar"></div>
+                            </div>
+                            <div id="text-display" class="text-display">
+                                <!-- Text will be injected here -->
+                            </div>
+                            <input type="text" id="type-input" class="type-input" autocomplete="off" autofocus>
+                        </div>
+
+                        <div class="live-keyboard-container">
+                            <div class="live-keyboard">
+                                <!-- Keys will be injected by JS -->
+                            </div>
+                        </div>
+
+                        <div class="practice-actions">
+                            <button id="restart-btn" class="icon-btn-large" title="Restart (Tab + Enter)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                                    <path d="M21 3v5h-5"></path>
+                                    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                                    <path d="M3 21v-5h5"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Progress/Stats View -->
+                <section id="view-progress" class="view hidden">
+                    <div class="dashboard-header">
+                        <div class="breadcrumb">Performance > <span>Overview</span></div>
+                        <div class="header-actions">
+                            <button id="clear-history" class="secondary-btn-small">Clear History</button>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid-premium">
+                        <!-- Stat cards -->
+                        <div class="stat-card-premium">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-content">
+                                <span class="label">Best Accuracy</span>
+                                <span id="best-acc" class="value">0%</span>
+                            </div>
+                        </div>
+                        <div class="stat-card-premium">
+                            <div class="stat-icon">🚀</div>
+                            <div class="stat-content">
+                                <span class="label">Top Speed</span>
+                                <span id="top-wpm" class="value">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card-premium">
+                            <div class="stat-icon">🏆</div>
+                            <div class="stat-content">
+                                <span class="label">Lessons Done</span>
+                                <span id="total-lessons" class="value">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card-premium">
+                            <div class="stat-icon">⌨️</div>
+                            <div class="stat-content">
+                                <span class="label">Tests Taken</span>
+                                <span id="total-tests" class="value">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overview-details">
+                        <div class="trouble-keys-premium" id="trouble-keys-section">
+                            <div class="section-header">
+                                <h3>Trouble Keys</h3>
+                                <p>Keys that need more practice</p>
+                            </div>
+                            <div class="trouble-keys-list" id="trouble-keys-list">
+                                <!-- Items injected by JS -->
+                            </div>
+                        </div>
+
+                        <div class="chart-container-premium">
+                            <div class="chart-header">
+                                <h3>WPM Performance History</h3>
+                                <span class="chart-legend">Last 10 Tests</span>
+                            </div>
+                            <div class="canvas-wrapper" style="height: 300px; width: 100%;">
+                                <canvas id="progressChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-history-premium">
+                        <div class="section-header">
+                            <h3>Recent Activity</h3>
+                        </div>
+                        <div class="history-table-wrapper">
+                            <table id="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Mode</th>
+                                        <th>WPM</th>
+                                        <th>Accuracy</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-body">
+                                    <!-- Rows will be injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Comprehensive Master Guide Hub -->
+                <section id="view-guide" class="view hidden">
+                    <div class="dashboard-header">
+                        <div class="breadcrumb">Typing Academy > <span>Professional Roadmap</span></div>
+                        <div class="header-main">
+                            <h2>Master the Speed of Thought</h2>
+                            <p class="subtitle">A complete blueprint from beginner to 100+ WPM precision.</p>
+                        </div>
+                    </div>
+
+                    <!-- Learning Path Roadmap -->
+                    <div class="guide-roadmap-premium">
+                        <div class="roadmap-stage active">
+                            <div class="stage-icon">🎯</div>
+                            <div class="stage-info">
+                                <h5>Beginner</h5>
+                                <span>Home Row & Anchors</span>
+                            </div>
+                        </div>
+                        <div class="roadmap-connector"></div>
+                        <div class="roadmap-stage">
+                            <div class="stage-icon">🚀</div>
+                            <div class="stage-info">
+                                <h5>Intermediate</h5>
+                                <span>Shift & Punctuation</span>
+                            </div>
+                        </div>
+                        <div class="roadmap-connector"></div>
+                        <div class="roadmap-stage">
+                            <div class="stage-icon">💎</div>
+                            <div class="stage-info">
+                                <h5>Advanced</h5>
+                                <span>Numbers & Symbols</span>
+                            </div>
+                        </div>
+                        <div class="roadmap-connector"></div>
+                        <div class="roadmap-stage">
+                            <div class="stage-icon">🏆</div>
+                            <div class="stage-info">
+                                <h5>Elite</h5>
+                                <span>100+ WPM Flow</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-grid-main">
+                        <!-- Interactive Action Card -->
+                        <div class="guide-card hand-mapping-card">
+                            <div class="card-header">
+                                <div class="icon-wrap">👐</div>
+                                <div class="title-group">
+                                    <h4>Dynamic Hand Placement</h4>
+                                    <span class="badge-premium">Live Training View</span>
+                                </div>
+                            </div>
+
+                            <div class="hand-mapping-main">
+                                <div class="interactive-hands-display">
+                                    <div class="guide-hand left">
+                                        <div class="f-box pinky" data-keys="Q A Z 1"><span>Pinky</span></div>
+                                        <div class="f-box ring" data-keys="W S X 2"><span>Ring</span></div>
+                                        <div class="f-box middle" data-keys="E D C 3"><span>Middle</span></div>
+                                        <div class="f-box index" data-keys="R T F G V B 4 5"><span>Index</span></div>
+                                    </div>
+                                    <div class="guide-hand right">
+                                        <div class="f-box index" data-keys="Y U H J N M 6 7"><span>Index</span></div>
+                                        <div class="f-box middle" data-keys="I K , 8"><span>Middle</span></div>
+                                        <div class="f-box ring" data-keys="O L . 9"><span>Ring</span></div>
+                                        <div class="f-box pinky" data-keys="P ; / [ ] ' 0 - ="><span>Pinky</span></div>
+                                    </div>
+                                </div>
+
+                                <div class="hand-demo-preview">
+                                    <div class="demo-tag">LIVE DEMO</div>
+                                    <div class="demo-animation-container">
+                                        <div class="keyboard-base-mini">
+                                            <div class="demo-row">
+                                                <span class="d-key q">Q</span><span class="d-key w">W</span><span
+                                                    class="d-key e">E</span><span class="d-key r">R</span><span
+                                                    class="d-key t">T</span>
+                                            </div>
+                                            <div class="demo-row">
+                                                <span class="d-key a active">A</span><span
+                                                    class="d-key s active">S</span><span
+                                                    class="d-key d active">D</span><span
+                                                    class="d-key f active">F</span><span class="d-key g">G</span>
+                                            </div>
+                                        </div>
+                                        <div class="hand-simulation">
+                                            <div class="ghost-hand left-ghost">
+                                                <div class="g-finger pinky"></div>
+                                                <div class="g-finger ring"></div>
+                                                <div class="g-finger middle"></div>
+                                                <div class="g-finger index"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="duty-display" class="duty-display">Hover over a finger to study its duty</div>
+                        </div>
+
+                        <div class="secondary-grid">
+                            <!-- Finger Tactics Card -->
+                            <div class="guide-card accent-card">
+                                <div class="card-header">
+                                    <div class="icon-wrap">🖱️</div>
+                                    <h4>Finger Mechanics</h4>
+                                </div>
+                                <div class="mechanics-list">
+                                    <div class="m-item">
+                                        <strong>The Natural Curve</strong>
+                                        <p>Keep fingers curved like you're holding a tennis ball.</p>
+                                    </div>
+                                    <div class="m-item">
+                                        <strong>Vertical Strike</strong>
+                                        <p>Press keys with your fingertips, not your pads.</p>
+                                    </div>
+                                    <div class="m-item">
+                                        <strong>Home-Bound</strong>
+                                        <p>Finger must return to home row immediately after strike.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Posture Card -->
+                            <div class="guide-card dark-card">
+                                <div class="card-header">
+                                    <div class="icon-wrap">🧘</div>
+                                    <h4>Elite Posture</h4>
+                                </div>
+                                <div class="posture-visual-grid">
+                                    <div class="p-item"><span>Feet</span> <strong>Flat on Floor</strong></div>
+                                    <div class="p-item"><span>Elbows</span> <strong>90° Angle</strong></div>
+                                    <div class="p-item"><span>Wrists</span> <strong>Floating</strong></div>
+                                </div>
+                            </div>
+
+                            <!-- Shortcut Guide -->
+                            <div class="guide-card dark-card">
+                                <div class="card-header">
+                                    <div class="icon-wrap">⚡</div>
+                                    <h4>Power User Keys</h4>
+                                </div>
+                                <div class="shortcut-list-premium">
+                                    <div class="sh-row"><span>Restart</span> <kbd>Tab+Enter</kbd></div>
+                                    <div class="sh-row"><span>Lessons</span> <kbd>Alt+L</kbd></div>
+                                    <div class="sh-row"><span>Tests</span> <kbd>Alt+T</kbd></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- The Mastery Process Section -->
+                    <div class="mastery-process-premium">
+                        <div class="section-title">
+                            <h3>The 3-Step Mastery Process</h3>
+                            <p>How to turn practice into permanent skill</p>
+                        </div>
+                        <div class="process-steps">
+                            <div class="p-step">
+                                <div class="step-icon">⚓</div>
+                                <h4>1. The Anchor</h4>
+                                <p>Locate the bumps on F and J. These are your orientation points. Always return here.
+                                </p>
+                            </div>
+                            <div class="p-step">
+                                <div class="step-icon">📏</div>
+                                <h4>2. The Reach</h4>
+                                <p>Move only the necessary finger. Keep all other fingers anchored to maintain your
+                                    position.</p>
+                            </div>
+                            <div class="p-step">
+                                <div class="step-icon">🌊</div>
+                                <h4>3. The Flow</h4>
+                                <p>Focus on a consistent tapping rhythm. Speed is the byproduct of sustained accuracy.
+                </section>
+
+                <!-- Profile & Settings View (Reworked) -->
+                <section id="view-profile" class="view hidden">
+                    <div class="profile-hub-hero">
+                        <div class="hero-banner"
+                            style="background-image: url('C:/Users/Arthe/.gemini/antigravity/brain/ccb7cc44-e5df-4b1e-8202-f4fd0714234f/profile_hero_pattern_1767064663227.png')">
+                        </div>
+                        <div class="hero-content">
+                            <div class="hero-user-info">
+                                <div class="profile-avatar-large">A</div>
+                                <div class="hero-text">
+                                    <h1 class="user-display-name">Arteesh</h1>
+                                    <div class="hero-badges">
+                                        <span class="badge-tag">Pro Typist</span>
+                                        <span class="badge-tag gold" id="profile-level-tag">Level 1</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hero-level-status">
+                                <div class="level-progress-labels">
+                                    <span>Global Rank: #1,240</span>
+                                    <span id="profile-xp-percent">0% to Level 2</span>
+                                </div>
+                                <div class="progress-track-wide">
+                                    <div class="progress-fill" id="profile-xp-fill" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-stats-bar">
+                        <div class="stat-box">
+                            <span class="val" id="profile-total-wpm">0</span>
+                            <span class="lab">Avg WPM</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="val" id="profile-total-acc">0%</span>
+                            <span class="lab">Avg Accuracy</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="val" id="profile-total-tests">0</span>
+                            <span class="lab">Tests Done</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="val" id="profile-total-time">0m</span>
+                            <span class="lab">Time Typing</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-main-grid">
+                        <div class="profile-left-col">
+                            <div class="profile-panel mastery-panel premium-card">
+                                <h3>Keyboard Proficiency</h3>
+                                <div class="proficiency-grid">
+                                    <div class="row-stat">
+                                        <div class="r-labels"><span>Home Row</span><span id="home-row-acc">0%</span>
+                                        </div>
+                                        <div class="progress-track-mini">
+                                            <div class="progress-fill" id="home-row-fill" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row-stat">
+                                        <div class="r-labels"><span>Top Row</span><span id="top-row-acc">0%</span></div>
+                                        <div class="progress-track-mini">
+                                            <div class="progress-fill" id="top-row-fill" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row-stat">
+                                        <div class="r-labels"><span>Bottom Row</span><span id="bottom-row-acc">0%</span>
+                                        </div>
+                                        <div class="progress-track-mini">
+                                            <div class="progress-fill" id="bottom-row-fill" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="profile-panel achievement-panel premium-card">
+                                <h3>Unlocked Achievements</h3>
+                                <div class="ach-grid-compact" id="profile-achievements-list">
+                                    <div class="ach-slot locked" id="ach-speed-60" title="Speed Demon: Reach 60 WPM">🔥
+                                    </div>
+                                    <div class="ach-slot locked" id="ach-acc-98"
+                                        title="Precision King: 98% Acc in 5 tests">🎯</div>
+                                    <div class="ach-slot locked" id="ach-beginner-done"
+                                        title="Scholar: Finish Beginner path">📚</div>
+                                    <div class="ach-slot locked" id="ach-velocity-100"
+                                        title="Velocity Master: 100+ WPM Mastery">⚡</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profile-right-col">
+                            <div class="profile-panel settings-panel premium-card">
+                                <h3>Settings & Security</h3>
+                                <div class="settings-stack">
+                                    <div class="set-item">
+                                        <span>Dark Mode</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="profile-dark-mode-toggle" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="set-item">
+                                        <span>Sound Effects</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="profile-sound-toggle-main" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <button class="secondary-btn-small" id="edit-profile-btn"
+                                        style="width: 100%; margin: 1rem 0;">Update Identity</button>
+                                    <button id="logout-btn" class="danger-link">Sign Out Session</button>
+                                </div>
+                            </div>
+
+                            <div class="profile-panel personality-panel premium-card">
+                                <h3>Typist Personality</h3>
+                                <div class="personality-content">
+                                    <div class="p-icon">🧐</div>
+                                    <div class="p-text">
+                                        <span class="p-title">The Tactician</span>
+                                        <p>You prioritize accuracy over speed. A steady hand leads to mastery.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div id="result-modal" class="modal hidden">
+        <div class="modal-content premium-card">
+            <div class="result-celebration">
+                <div id="stars-container" class="stars-container">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <h2>Great Work!</h2>
+            </div>
+            <div class="final-stats-grid">
+                <div class="final-stat-item">
+                    <span class="label">Speed</span>
+                    <span id="final-wpm" class="value">0 WPM</span>
+                </div>
+                <div class="final-stat-item">
+                    <span class="label">Accuracy</span>
+                    <span id="final-accuracy" class="value">0%</span>
+                </div>
+                <div class="final-stat-item">
+                    <span class="label">Characters</span>
+                    <span id="final-chars" class="value">0</span>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="modal-next" class="primary-btn">Next Lesson</button>
+                <button id="modal-close" class="secondary-btn">Try Again</button>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>Tip: Press <kbd>Tab</kbd> + <kbd>Enter</kbd> to restart instantly</p>
+            <div class="social-links">
+                <span>Velocity Type v2.0</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
