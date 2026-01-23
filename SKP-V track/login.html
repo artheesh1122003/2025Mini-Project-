@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | SKP V-Track</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            background: radial-gradient(circle at center, #1e1b4b 0%, var(--bg-darker) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: auto;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+            animation: float 6s ease-in-out infinite;
+            object-fit: cover;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .login-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Role Switcher */
+        .role-switch {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            padding: 0.25rem;
+            display: flex;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 0.75rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .role-btn.active {
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .role-indicator {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background: var(--primary);
+            border-radius: 10px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+            z-index: 1;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            transition: color 0.3s;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem;
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(15, 23, 42, 0.6);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-input:focus+.input-icon {
+            color: var(--primary);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .role-admin-color {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        }
+
+        .role-student-color {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        /* Dynamic Color Changes for Student */
+        body[data-role="student"] .role-indicator {
+            background: var(--accent-success);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        body[data-role="student"] .login-logo {
+            color: var(--accent-success);
+            filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.5));
+        }
+
+        body[data-role="student"] .submit-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        body[data-role="student"] .form-input:focus {
+            border-color: var(--accent-success);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+
+        body[data-role="student"] .form-input:focus+.input-icon {
+            color: var(--accent-success);
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-top: 1rem;
+            min-height: 1.25em;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.3s;
+        }
+
+        .error-message.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRg-SN8O_Wzg6ugtA7QKsGlAI_LE4zs1TJQWQ&s"
+                    class="login-logo" alt="SKP V-Track Logo"
+                    onerror="this.src='https://ui-avatars.com/api/?name=SKP&background=6366f1&color=fff&size=128'">
+                <h1 class="login-title">SKP V-Track</h1>
+                <p class="login-subtitle">Next-Gen Campus Fleet Management</p>
+            </div>
+
+            <div class="role-switch">
+                <div class="role-indicator"></div>
+                <div class="role-btn active" data-role="admin" onclick="switchRole('admin')">Admin Portal</div>
+                <div class="role-btn" data-role="student" onclick="switchRole('student')">Student Zone</div>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <input type="text" class="form-input" style="padding-left: 3rem;" id="username"
+                        placeholder="Username" required>
+                    <i class='bx bx-user input-icon'></i>
+                </div>
+
+                <div class="form-group" id="passwordGroup">
+                    <input type="password" class="form-input" style="padding-left: 3rem;" id="password"
+                        placeholder="Password" required>
+                    <i class='bx bx-lock-alt input-icon'></i>
+                </div>
+
+                <button type="submit" class="submit-btn" id="loginBtn">Access Dashboard</button>
+                <div class="error-message" id="errorMsg">Authentication Failed</div>
+            </form>
+
+            <p
+                style="text-align: center; margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted); opacity: 0.7;">
+                &copy; 2025 Artheesh.E
+            </p>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        let currentRole = 'admin';
+
+        // Check for local logo if available (fallback handled in HTML)
+        const logo = document.querySelector('.login-logo');
+        // We can try to load the local image 
+        // logo.src = 'skp_logo.png'; 
+
+        function switchRole(role) {
+            currentRole = role;
+            document.body.setAttribute('data-role', role);
+
+            // Update UI
+            const indicator = document.querySelector('.role-indicator');
+            const btns = document.querySelectorAll('.role-btn');
+
+            btns.forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-role="${role}"]`).classList.add('active');
+
+            // Form Logic
+            const usernameInput = document.getElementById('username');
+            const passwordGroup = document.getElementById('passwordGroup');
+            const passwordInput = document.getElementById('password');
+            const btn = document.getElementById('loginBtn');
+
+            if (role === 'student') {
+                indicator.style.transform = 'translateX(100%)';
+                usernameInput.placeholder = "Enter Register Number";
+                passwordGroup.style.display = 'none';
+                passwordInput.removeAttribute('required');
+                btn.textContent = "Track My Bus";
+            } else {
+                indicator.style.transform = 'translateX(0)';
+                usernameInput.placeholder = "Admin Username";
+                passwordGroup.style.display = 'block';
+                passwordInput.setAttribute('required', 'true');
+                btn.textContent = "Access Dashboard";
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const btn = document.getElementById('loginBtn');
+
+            let isValid = false;
+            let customError = "Invalid credentials";
+
+            if (currentRole === 'admin') {
+                // Hardcoded Admin for demo
+                if (username.toLowerCase() === 'admin' && password === 'admin123') {
+                    isValid = true;
+                } else if (username && password) {
+                    // Allow generic login for ease of testing if specific creds not required
+                    isValid = true;
+                }
+            } else {
+                // Student Validation - Reworked for better usability
+                if (username.length > 0) {
+                    isValid = true;
+                    
+                    // Check if exists in registry to get details, otherwise use dummy
+                    const students = JSON.parse(localStorage.getItem('skp_student_data') || '[]');
+                    const found = students.find(s => s.rollNo === username);
+                    
+                    if (found) {
+                        localStorage.setItem('currentUser', JSON.stringify(found));
+                    } else {
+                        // Create temporary session for non-registered ID
+                        localStorage.setItem('currentUser', JSON.stringify({
+                            rollNo: username,
+                            name: "Student " + username,
+                            dept: "Unknown",
+                            busRoute: "Not Assigned"
+                        }));
+                    }
+                } else {
+                    customError = "Please enter a valid Register Number";
+                    isValid = false;
+                }
+            }
+
+            if (isValid) {
+                btn.innerHTML = "<i class='bx bx-loader-alt bx-spin'></i> Verifying...";
+                btn.style.opacity = '0.9';
+
+                setTimeout(() => {
+                    Auth.login(currentRole);
+                }, 1000);
+            } else {
+                showError(customError);
+            }
+        }
+
+        function showError(msg) {
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.textContent = msg;
+            errorMsg.classList.add('visible');
+
+            // Shake animation
+            const card = document.querySelector('.login-card');
+            card.style.transform = 'translateX(10px)';
+            setTimeout(() => card.style.transform = 'translateX(-10px)', 100);
+            setTimeout(() => card.style.transform = 'translateX(10px)', 200);
+            setTimeout(() => card.style.transform = 'translateX(0)', 300);
+
+            setTimeout(() => errorMsg.classList.remove('visible'), 3000);
+        }
+
+        // Auto-focus
+        window.onload = () => document.getElementById('username').focus();
+    </script>
+</body>
+
+</html>

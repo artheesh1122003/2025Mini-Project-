@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buses on Route | SKP V-Track</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <i class='bx bxs-navigation logo-icon'></i>
+                <span class="logo-text">SKP V-Track</span>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">
+                    <i class='bx bxs-dashboard'></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="live-map.html" class="nav-link">
+                    <i class='bx bxs-map-alt'></i>
+                    <span>Live Map</span>
+                </a>
+                <a href="fleet.html" class="nav-link">
+                    <i class='bx bxs-car'></i>
+                    <span>Fleet</span>
+                </a>
+                <a href="routes.html" class="nav-link active">
+                    <i class='bx bxs-route'></i>
+                    <span>Routes</span>
+                </a>
+
+                <a href="settings.html" class="nav-link">
+                    <i class='bx bxs-cog'></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="user-profile">
+                <div class="avatar">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=6366f1&color=fff" alt="User">
+                </div>
+                <div class="user-info">
+                    <h4>Admin User</h4>
+                    <p>Fleet Manager</p>
+                </div>
+                <i class='bx bx-log-out logout-btn'></i>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1>Buses on Route</h1>
+                    <p class="date-display" id="currentDate">Loading...</p>
+                </div>
+
+                <div class="header-right">
+                    <div class="search-bar">
+                        <i class='bx bx-search'></i>
+                        <input type="text" id="routeSearch" placeholder="Search routes...">
+                    </div>
+                    <button class="icon-btn theme-toggle">
+                        <i class='bx bx-moon'></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Route Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon vehicle">
+                        <i class='bx bxs-bus'></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Active Routes</h3>
+                        <p class="stat-number" id="activeRoutesCount">0</p>
+                        <span class="stat-trend positive">Morning Shift</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon active-bg">
+                        <i class='bx bx-radar'></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Buses on Route</h3>
+                        <p class="stat-number" id="busesOnRouteCount">0</p>
+                        <span class="stat-trend neutral">Live Tracking</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon distance">
+                        <i class='bx bxs-map-pin'></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Total Stops</h3>
+                        <p class="stat-number" id="totalStopsCount">0</p>
+                        <span class="stat-trend positive">Coverage</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Route Cards Grid -->
+            <div class="routes-container">
+                <h2 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class='bx bxs-route'></i> Active Routes
+                </h2>
+                <div class="routes-grid" id="routesGrid">
+                    <!-- Routes will be populated by JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="auth.js"></script>
+    <script>Auth.checkAccess(['admin']);</script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="routes.js"></script>
+</body>
+
+</html>

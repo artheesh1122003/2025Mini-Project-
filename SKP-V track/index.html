@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKP V-Track | Elite Vehicle Tracking</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Boxicons for Icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <i class='bx bxs-navigation logo-icon'></i>
+                <span class="logo-text">SKP V-Track</span>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link active">
+                    <i class='bx bxs-dashboard'></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="live-map.html" class="nav-link">
+                    <i class='bx bxs-map-alt'></i>
+                    <span>Live Map</span>
+                </a>
+                <a href="fleet.html" class="nav-link">
+                    <i class='bx bxs-car'></i>
+                    <span>Fleet</span>
+                </a>
+
+
+                <a href="settings.html" class="nav-link">
+                    <i class='bx bxs-cog'></i>
+                    <span>Settings</span>
+                </a>
+
+            </nav>
+
+            <div class="user-profile">
+                <div class="avatar">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=6366f1&color=fff" alt="User">
+                </div>
+                <div class="user-info">
+                    <h4>Admin User</h4>
+                    <p>Fleet Manager</p>
+                </div>
+                <i class='bx bx-log-out logout-btn'></i>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1>Register Student</h1>
+                    <p class="date-display" id="currentDate">Loading...</p>
+                </div>
+
+                <div class="header-right">
+
+                    <div class="search-bar">
+                        <i class='bx bx-search'></i>
+                        <input type="text" id="vehicleSearchInput" placeholder="Enter Vehicle No (e.g. 1042)...">
+                    </div>
+                    <button class="icon-btn theme-toggle">
+                        <i class='bx bx-moon'></i>
+                    </button>
+                    <button class="icon-btn">
+                        <i class='bx bx-bell'></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon vehicle">
+                        <i class='bx bxs-bus'></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Total Buses</h3>
+                        <p class="stat-number" id="totalBusesStat">48</p>
+                        <span class="stat-trend positive">+2 New</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon active-bg">
+                        <i class='bx bx-radar'></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Buses on Route</h3>
+                        <p class="stat-number" id="activeBusesStat">32</p>
+                        <span class="stat-trend neutral">Morning Shift</span>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <!-- Content Split -->
+            <div class="content-split">
+                <!-- Map Section -->
+                <div class="glass-panel map-section" style="display: flex; flex-direction: column;">
+                    <div class="panel-header">
+                        <h2><i class='bx bxs-map'></i> Live Fleet Map</h2>
+                    </div>
+                    <div id="map-container" style="flex: 1; min-height: 500px; width: 100%;"></div>
+                </div>
+
+                <!-- Registration Form Container -->
+                <div class="registration-container">
+                    <div class="glass-panel" style="padding: 2rem;">
+                        <div class="panel-header" style="margin-bottom: 2rem;">
+                            <h2><i class='bx bxs-user-badge'></i> Student Registration Form</h2>
+                        </div>
+                        <form class="vehicle-form" id="studentForm">
+                            <div class="form-group">
+                                <label>Register Number</label>
+                                <input type="text" placeholder="Ex: 510819104001" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Student Name</label>
+                                <input type="text" placeholder="Full Name" required>
+                            </div>
+                            <div class="form-group">
+                                <div class="half">
+                                    <div>
+                                        <label>Department</label>
+                                        <select>
+                                            <option>CSE</option>
+                                            <option>ECE</option>
+                                            <option>EEE</option>
+                                            <option>MECH</option>
+                                            <option>CIVIL</option>
+                                            <option>IT</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>Year</label>
+                                        <select>
+                                            <option>I</option>
+                                            <option>II</option>
+                                            <option>III</option>
+                                            <option>IV</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Assign Bus Route</label>
+                                <select>
+                                    <option value="Bus-1">Bus 1 (Chengam)</option>
+                                    <option value="Bus-5">Bus 5 (Polur)</option>
+                                    <option value="Bus-3">Bus 3 (Kanji)</option>
+                                    <option value="Bus-12">Bus 12 (Campus)</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="submit-btn full-width">Register Student</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+
+    <!-- Scripts -->
+    <script src="auth.js"></script>
+    <script>Auth.checkAccess(['admin']);</script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

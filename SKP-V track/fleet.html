@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Management | SKP V-Track</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Boxicons for Icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <i class='bx bxs-navigation logo-icon'></i>
+                <span class="logo-text">SKP V-Track</span>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">
+                    <i class='bx bxs-dashboard'></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="live-map.html" class="nav-link">
+                    <i class='bx bxs-map-alt'></i>
+                    <span>Live Map</span>
+                </a>
+                <a href="fleet.html" class="nav-link active">
+                    <i class='bx bxs-car'></i>
+                    <span>Fleet</span>
+                </a>
+
+
+                <a href="settings.html" class="nav-link">
+                    <i class='bx bxs-cog'></i>
+                    <span>Settings</span>
+                </a>
+
+            </nav>
+
+            <div class="user-profile">
+                <div class="avatar">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=6366f1&color=fff" alt="User">
+                </div>
+                <div class="user-info">
+                    <h4>Admin User</h4>
+                    <p>Fleet Manager</p>
+                </div>
+                <i class='bx bx-log-out logout-btn'></i>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1>College Bus Fleet</h1>
+                    <p class="date-display" id="currentDate">Loading...</p>
+                </div>
+
+                <div class="header-right">
+                    <button class="add-btn" id="addVehicleBtn">
+                        <i class='bx bx-plus'></i> Add New Vehicle
+                    </button>
+                    <div class="search-bar">
+                        <i class='bx bx-search'></i>
+                        <input type="text" id="fleetSearch" placeholder="Search fleet...">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Filters -->
+            <div class="fleet-filters">
+                <button class="filter-chip active" data-filter="all">All Vehicles</button>
+                <button class="filter-chip" data-filter="bus">Route Buses</button>
+                <button class="filter-chip" data-filter="van">Staff Vans</button>
+                <button class="filter-chip" data-filter="maintenance">Workshop</button>
+            </div>
+
+            <!-- Fleet Grid -->
+            <div class="fleet-grid" id="fleetGrid">
+                <!-- Vehicle Card Example (Will be populated by JS) -->
+                <!-- 
+                <div class="fleet-card">
+                    <div class="card-header">
+                        <div class="v-type-icon"><i class='bx bxs-truck'></i></div>
+                        <span class="status-badge moving">Active</span>
+                        <div class="menu-dots"><i class='bx bx-dots-vertical-rounded'></i></div>
+                    </div>
+                    <div class="vehicle-image">
+                        <img src="https://example.com/truck.png" alt="Vehicle">
+                    </div>
+                    <div class="vehicle-details">
+                        <h3>Volvo FH16</h3>
+                        <p class="plate-number">TN-25-AB-1234</p>
+                        <div class="detail-row">
+                            <span><i class='bx bx-user'></i> Rajesh Kumar</span>
+                            <span><i class='bx bx-gas-pump'></i> Diesel</span>
+                        </div>
+                        <div class="detail-row">
+                            <span><i class='bx bx-map'></i> Tiruvannamalai</span>
+                            <span><i class='bx bx-ruler'></i> 145,000 km</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn">Track</button>
+                        <button class="action-btn outline">Details</button>
+                    </div>
+                </div> 
+                -->
+            </div>
+    </div>
+    </main>
+    </div>
+
+
+
+    <!-- Add Vehicle Modal -->
+    <div class="modal-overlay" id="addVehicleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Vehicle</h2>
+                <i class='bx bx-x close-modal'></i>
+            </div>
+            <form class="vehicle-form">
+                <div class="form-group">
+                    <label>Vehicle Model</label>
+                    <input type="text" placeholder="e.g. Tata Prima 5530">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>License Plate</label>
+                        <input type="text" placeholder="TN-XX-XX-XXXX">
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label>Assign Driver</label>
+                    <input type="text" placeholder="Driver Name">
+                </div>
+                <button type="submit" class="submit-btn">Register Vehicle</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Details Modal -->
+    <div class="modal-overlay" id="viewVehicleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Vehicle Details</h2>
+                <i class='bx bx-x close-modal' id="closeViewModal"></i>
+            </div>
+            <div class="vehicle-details-view">
+                <!-- Header with Icon and basic info -->
+                <div class="details-top">
+                    <div class="details-icon-box">
+                        <i class='bx bxs-bus' id="detailIcon"></i>
+                    </div>
+                    <div class="details-title">
+                        <h3 id="detailModel">Vehicle Model</h3>
+                        <span class="status-badge" id="detailStatus">Active</span>
+                    </div>
+                </div>
+
+                <!-- Info Grid -->
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <label>License Plate</label>
+                        <p id="detailPlate">TN-XX-XX-XXXX</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>Driver</label>
+                        <p id="detailDriver">Driver Name</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>Route / Location</label>
+                        <p id="detailLocation">Location</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>Fuel Type</label>
+                        <p id="detailFuel">Diesel</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>Total Distance</label>
+                        <p id="detailKm">0 km</p>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="details-actions">
+                    <button class="delete-btn" id="deleteVehicleBtn">
+                        <i class='bx bx-trash'></i> Remove Vehicle
+                    </button>
+                    <!-- <button class="edit-btn">Edit Details</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="auth.js"></script>
+    <script>Auth.checkAccess(['admin']);</script>
+    <script src="fleet.js"></script>
+</body>
+
+</html>
+```

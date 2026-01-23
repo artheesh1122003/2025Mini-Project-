@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Bus Tracking | SKP V-Track</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Live Map Page Specific Overrides */
+        .live-map-container {
+            position: relative;
+            height: calc(100vh - 100px);
+            /* Adjust for header/padding */
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: var(--glass-border);
+        }
+
+        #map-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .map-overlay-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 320px;
+            background: rgba(15, 23, 42, 0.85);
+            /* Darker, more opaque for readability */
+            backdrop-filter: blur(12px);
+            border: var(--glass-border);
+            border-radius: 16px;
+            z-index: 1000;
+            /* Above map */
+            padding: 1rem;
+            max-height: calc(100% - 40px);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .overlay-header {
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .overlay-header h3 {
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .map-vehicle-list {
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .map-vehicle-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .map-vehicle-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .map-vehicle-item.active {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .v-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .dot-green {
+            background: var(--accent-success);
+            box-shadow: 0 0 8px var(--accent-success);
+        }
+
+        .dot-grey {
+            background: var(--text-muted);
+        }
+
+        .dot-red {
+            background: var(--accent-error);
+            box-shadow: 0 0 8px var(--accent-error);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <i class='bx bxs-navigation logo-icon'></i>
+                <span class="logo-text">SKP V-Track</span>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">
+                    <i class='bx bxs-dashboard'></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="live-map.html" class="nav-link active">
+                    <i class='bx bxs-map-alt'></i>
+                    <span>Live Map</span>
+                </a>
+                <a href="fleet.html" class="nav-link">
+                    <i class='bx bxs-car'></i>
+                    <span>Fleet</span>
+                </a>
+
+
+                <a href="settings.html" class="nav-link">
+                    <i class='bx bxs-cog'></i>
+                    <span>Settings</span>
+                </a>
+
+            </nav>
+
+            <div class="user-profile">
+                <!-- Profile content same as index -->
+                <div class="avatar">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=6366f1&color=fff" alt="User">
+                </div>
+                <div class="user-info">
+                    <h4>Admin User</h4>
+                    <p>Fleet Manager</p>
+                </div>
+                <i class='bx bx-log-out logout-btn'></i>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1>Real-Time Monitoring</h1>
+                    <p class="date-display" id="currentDate">Loading...</p>
+                </div>
+
+                <div class="header-right">
+                    <div class="search-bar" style="width: 350px;">
+                        <i class='bx bx-search'></i>
+                        <input type="text" id="vehicleSearchInput" placeholder="Enter Vehicle ID to Track...">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Full Screen Map Area -->
+            <div class="live-map-container">
+                <div id="map-container"></div>
+
+                <!-- Floating Overlay Panel -->
+                <div class="map-overlay-panel">
+                    <div class="overlay-header">
+                        <h3><i class='bx bxs-bus'></i> Active Buses</h3>
+                        <div id="mapFleetStats"
+                            style="font-size: 0.85rem; margin-top: 0.5rem; display: flex; gap: 1rem; font-weight: 500;">
+                            <!-- Stats injected by JS -->
+                            <span style="color: var(--accent-success);">● Loading...</span>
+                        </div>
+                        <button class="active-bus-btn" id="activeBusBtn"
+                            style="background: var(--accent-success); color: white; border: none; padding: 0.6rem 1rem; border-radius: 6px; cursor: pointer; margin-top: 0.75rem; width: 100%; font-weight: 600; transition: all 0.3s;">
+                            Show Active Only
+                        </button>
+                        <p
+                            style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.5rem;">
+                            Live data from Tiruvannamalai
+                        </p>
+                    </div>
+
+                    <div class="map-vehicle-list vehicle-list">
+                        <!-- Empty placeholder -->
+                        <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                            <p style="font-size: 0.8rem;">No active buses</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="auth.js"></script>
+    <script>Auth.checkAccess(['admin', 'student']);</script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
