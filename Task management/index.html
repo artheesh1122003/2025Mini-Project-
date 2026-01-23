@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow | Premium Task Management</title>
+    <meta name="description"
+        content="Manage your tasks with TaskFlow - a sleek, modern, and efficient task management system designed for peak productivity.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <span>TaskFlow</span>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" id="btn-all-tasks">
+                    <i class="fas fa-tasks"></i>
+                    <span>All Tasks</span>
+                </a>
+                <a href="#" class="nav-item" id="btn-today">
+                    <i class="far fa-calendar-check"></i>
+                    <span>Today</span>
+                </a>
+                <a href="#" class="nav-item" id="btn-upcoming">
+                    <i class="far fa-calendar-alt"></i>
+                    <span>Upcoming</span>
+                </a>
+                <a href="#" class="nav-item" id="btn-completed">
+                    <i class="fas fa-check-double"></i>
+                    <span>Completed</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-divider"></div>
+
+            <!-- Categories removed as per user request -->
+
+
+            <div class="sidebar-footer">
+                <a href="profile.html" class="user-profile-link" style="text-decoration: none; color: inherit;">
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Alex+Morgan&background=6366f1&color=fff" alt="User"
+                            id="user-avatar">
+                        <div class="user-info">
+                            <span class="user-name">Alex Morgan</span>
+                        </div>
+                        <i class="fas fa-chevron-right"
+                            style="margin-left: auto; font-size: 0.8rem; color: var(--text-muted);"></i>
+                    </div>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="task-search" placeholder="Search tasks...">
+                </div>
+                <div class="system-clock">
+                    <span id="clock-time">00:00:00</span>
+                    <span id="clock-date">Month Day, Year</span>
+                </div>
+                <div class="header-actions">
+                    <button id="add-task-btn" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        <span>New Task</span>
+                    </button>
+                    <button class="icon-btn theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="page-header">
+                <div class="header-text">
+                    <h1 id="page-title">All Tasks</h1>
+                    <p id="task-count">You have 0 tasks for today</p>
+                </div>
+                <div class="view-options">
+                    <button class="icon-btn active" title="List View"><i class="fas fa-list"></i></button>
+                    <button class="icon-btn" title="Grid View"><i class="fas fa-th-large"></i></button>
+                </div>
+            </div>
+
+            <!-- Stats Overview -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-pending">0</span>
+                        <span class="stat-label">Pending</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-completed">0</span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-efficiency">0%</span>
+                        <span class="stat-label">Efficiency</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tasks Container -->
+            <div class="tasks-section">
+                <div class="tasks-filters">
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="todo">To Do</button>
+                        <button class="filter-btn" data-filter="in-progress">In Progress</button>
+                        <button class="filter-btn" data-filter="done">Done</button>
+                    </div>
+                    <div class="sort-container">
+                        <span>Sort by:</span>
+                        <select id="sort-select">
+                            <option value="newest">Newest First</option>
+                            <option value="priority">Priority</option>
+                            <option value="due">Due Date</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="tasks-list" class="tasks-list">
+                    <!-- Tasks will be injected here by JS -->
+                    <div class="empty-state">
+                        <div class="empty-icon glass-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <h2>No tasks found</h2>
+                        <p>Start your journey by creating your first task!</p>
+                        <button class="btn-secondary" onclick="document.getElementById('add-task-btn').click()">
+                            Add Your First Task
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Task Modal -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h2 id="modal-title">Create New Task</h2>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="task-form">
+                <div class="form-group">
+                    <label for="task-title">Title</label>
+                    <input type="text" id="task-title" placeholder="What needs to be done?" required>
+                </div>
+                <div class="form-group">
+                    <label for="task-description">Description (Optional)</label>
+                    <textarea id="task-description" placeholder="Add more details..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label for="task-priority">Priority</label>
+                        <select id="task-priority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="task-date">Due Date</label>
+                    <input type="date" id="task-date">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost close-modal">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Sync User Data across pages
+        function syncUserData() {
+            const userData = JSON.parse(localStorage.getItem('taskflow_user')) || {
+                name: 'Alex Morgan'
+            };
+            const sidebarName = document.querySelector('.user-name');
+            if (sidebarName) sidebarName.innerText = userData.name;
+
+            const names = userData.name.split(' ');
+            const avatarUrl = `https://ui-avatars.com/api/?name=${names.join('+')}&background=6366f1&color=fff`;
+            document.querySelectorAll('img[src*="ui-avatars"]').forEach(img => {
+                img.src = avatarUrl;
+            });
+        }
+
+        window.addEventListener('load', syncUserData);
+        // Also sync when returning to tab
+        window.addEventListener('focus', syncUserData);
+    </script>
+</body>
+
+</html>
