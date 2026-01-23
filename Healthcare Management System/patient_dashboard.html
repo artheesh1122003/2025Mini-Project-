@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Report - Healthcare Management</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .report-section {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .report-title h2 {
+            font-size: 1.5rem;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+
+        .date-badge {
+            background: var(--bg-color);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-weight: 500;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .report-item {
+            margin-bottom: 25px;
+        }
+
+        .report-item h4 {
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .report-item p,
+        .report-item div {
+            color: var(--text-main);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .result-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        .normal {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .warning {
+            background: #fff7ed;
+            color: #9a3412;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .sidebar .nav-links li a.active {
+            background: #e0f2fe;
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <span>HealthCare+</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="active" onclick="showSection('reports')"><i class="fa-solid fa-file-medical"></i> My
+                    Reports</a></li>
+            <li><a href="#" onclick="showSection('appointments')"><i class="fa-solid fa-calendar-check"></i>
+                    Appointments</a></li>
+            <li><a href="#" onclick="showSection('lab')"><i class="fa-solid fa-vial"></i> Lab Results</a></li>
+        </ul>
+        <a href="index.html" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header>
+            <div class="header-title">
+                <h1 id="welcome-msg">Patient Medical Report</h1>
+                <p>Detailed overview of your latest health assessment.</p>
+            </div>
+            <div class="user-profile">
+                <button class="download-btn">
+                    <i class="fa-solid fa-download"></i> Download PDF
+                </button>
+            </div>
+        </header>
+
+        <!-- Reports Section (Default) -->
+        <div id="reports-section">
+            <!-- Patient Health Profile Header -->
+            <div class="stat-card"
+                style="margin-bottom: 30px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 1px solid #bae6fd;">
+                <div style="display: flex; gap: 40px; align-items: center; width: 100%; padding: 10px;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span
+                            style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px;">Blood
+                            Group</span>
+                        <span style="font-size: 1.5rem; font-weight: 700; color: #ef4444;">O+ (Positive)</span>
+                    </div>
+                    <div style="width: 2px; height: 40px; background: #e2e8f0;"></div>
+                    <div style="display: flex; flex-direction: column;">
+                        <span
+                            style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px;">Age
+                            / Sex</span>
+                        <span style="font-size: 1.1rem; font-weight: 600;">28 Years • Male</span>
+                    </div>
+                    <div style="width: 2px; height: 40px; background: #e2e8f0;"></div>
+                    <div style="display: flex; flex-direction: column;">
+                        <span
+                            style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px;">Height
+                            / Weight</span>
+                        <span style="font-size: 1.1rem; font-weight: 600;">178 cm • 70 kg</span>
+                    </div>
+                    <div style="width: 2px; height: 40px; background: #e2e8f0;"></div>
+                    <div style="display: flex; flex-direction: column; flex: 1;">
+                        <span
+                            style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px;">Last
+                            Updated</span>
+                        <span style="font-size: 1.1rem; font-weight: 600;">Dec 24, 2025</span>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <div
+                            style="background: #fee2e2; color: #ef4444; padding: 10px 15px; border-radius: 12px; display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.85rem;">
+                            <i class="fa-solid fa-triangle-exclamation"></i> ALLERGIES: PENICILLIN
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-grid" style="margin-bottom: 30px;">
+                <div class="stat-card" style="flex: 2; flex-direction: column; align-items: flex-start;">
+                    <h4 style="margin-bottom: 15px; color: var(--text-light);">Health Trends (Heart Rate)</h4>
+                    <div class="chart-container">
+                        <div class="chart-bar" style="height: 60%;" data-label="Oct"></div>
+                        <div class="chart-bar" style="height: 75%;" data-label="Nov"></div>
+                        <div class="chart-bar" style="height: 65%;" data-label="Dec"></div>
+                        <div class="chart-bar" style="height: 80%; background: #10b981;" data-label="Today"></div>
+                    </div>
+                </div>
+                <div class="stat-card" style="flex: 1;">
+                    <div class="stat-info">
+                        <h4 style="color: var(--primary); margin-bottom: 10px;">Wellness Score</h4>
+                        <h2 style="font-size: 3rem; color: var(--text-main);">84%</h2>
+                        <p style="color: #10b981; font-weight: 500;"><i class="fa-solid fa-arrow-up"></i> +5% from last
+                            month</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Stats Grid for Vitals -->
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="icon-box blue-bg">
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>120/80</h3>
+                        <p>Blood Pressure</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-box green-bg">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>72 bpm</h3>
+                        <p>Heart Rate</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-box purple-bg">
+                        <i class="fa-solid fa-weight-scale"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>70 kg</h3>
+                        <p>Weight</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-box orange-bg">
+                        <i class="fa-solid fa-syringe"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>5.4</h3>
+                        <p>Glucose (mmol/L)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Report Section -->
+            <div class="report-section">
+                <div class="report-header">
+                    <div class="report-title">
+                        <h2>Latest Diagnosis Summary</h2>
+                        <p>Consultation with Dr. Sarah Smith</p>
+                    </div>
+                    <div class="date-badge">Report Date: Dec 24, 2025</div>
+                </div>
+
+                <div class="report-grid">
+                    <div class="left-col">
+                        <div class="report-item">
+                            <h4>Reason for Visit</h4>
+                            <p>Annual routine checkup and blood work analysis.</p>
+                        </div>
+                        <div class="report-item">
+                            <h4>Physician's Summary</h4>
+                            <p>Patient is in overall good health. Cardiovascular health is stable. Recommended to
+                                continue regular exercise and maintain current diet. Blood pressure and heart rate are
+                                within optimal ranges.</p>
+                        </div>
+                        <!-- New Action Items -->
+                        <div class="stat-card"
+                            style="background: #fdf2f8; border: 1px solid #fbcfe8; flex-direction: column; align-items: flex-start; padding: 20px;">
+                            <h4 style="color: #be185d; font-size: 0.8rem; margin-bottom: 15px;">NEXT ACTION ITEMS</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li
+                                    style="margin-bottom: 10px; font-size: 0.9rem; display: flex; gap: 10px; align-items: center;">
+                                    <i class="fa-solid fa-circle-check" style="color: #db2777;"></i> Book Eye Test
+                                    (Within 2 weeks)
+                                </li>
+                                <li
+                                    style="margin-bottom: 10px; font-size: 0.9rem; display: flex; gap: 10px; align-items: center;">
+                                    <i class="fa-regular fa-circle" style="color: #db2777;"></i> Download Lab Reports
+                                    PDF
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="right-col">
+                        <div class="report-item">
+                            <h4>Lab Observations</h4>
+                            <div>
+                                <strong>Cholesterol:</strong> 180 mg/dL <span
+                                    class="result-tag normal">Normal</span><br>
+                                <strong>Hemoglobin:</strong> 14.5 g/dL <span class="result-tag normal">Normal</span><br>
+                                <strong>Vitamin D:</strong> 22 ng/mL <span class="result-tag warning">Low</span>
+                            </div>
+                        </div>
+                        <div class="report-item">
+                            <h4>Medication Reminders</h4>
+                            <div
+                                style="background: #eff6ff; padding: 15px; border-radius: 12px; border: 1px solid #dbeafe;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <strong>Vitamin D3</strong>
+                                    <span style="font-size: 0.8rem; color: var(--primary);">08:00 AM</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <strong>Omega-3</strong>
+                                    <span style="font-size: 0.8rem; color: var(--primary);">01:30 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="report-item">
+                            <h4>General Recommendations</h4>
+                            <p>• Daily Vitamin D supplement (2000 IU)<br>
+                                • Follow-up in 6 months<br>
+                                • Increase leafy greens intake</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medical Imaging & Digital Records -->
+            <div class="report-section" style="margin-top: 30px;">
+                <div class="section-header">
+                    <h2>Digital Health Records & Imaging</h2>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 20px;">
+                    <div class="info-card"
+                        style="cursor: pointer; transition: transform 0.2s; border: 1px solid var(--border);"
+                        onclick="alert('Opening X-Ray Viewer...')">
+                        <div
+                            style="height: 120px; background: #1e293b; border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+                            <i class="fa-solid fa-bone" style="font-size: 3rem; color: rgba(255,255,255,0.2);"></i>
+                            <div
+                                style="position: absolute; bottom: 10px; right: 10px; background: rgba(14, 165, 233, 0.9); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.7rem;">
+                                X-RAY</div>
+                        </div>
+                        <h4 style="font-size: 0.9rem; margin-top: 10px; padding: 0 10px;">Chest X-Ray (A-P)</h4>
+                        <p style="font-size: 0.75rem; color: var(--text-light); padding: 0 10px 10px;">Dec 20, 2025</p>
+                    </div>
+                    <div class="info-card"
+                        style="cursor: pointer; transition: transform 0.2s; border: 1px solid var(--border);"
+                        onclick="alert('Opening ECG Viewer...')">
+                        <div
+                            style="height: 120px; background: #f8fafc; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+                            <i class="fa-solid fa-wave-square"
+                                style="font-size: 3rem; color: #ef4444; opacity: 0.2;"></i>
+                            <div
+                                style="position: absolute; bottom: 10px; right: 10px; background: rgba(16, 185, 129, 0.9); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.7rem;">
+                                ECG</div>
+                        </div>
+                        <h4 style="font-size: 0.9rem; margin-top: 10px; padding: 0 10px;">12-Lead ECG Report</h4>
+                        <p style="font-size: 0.75rem; color: var(--text-light); padding: 0 10px 10px;">Dec 20, 2025</p>
+                    </div>
+                    <div class="info-card"
+                        style="cursor: pointer; transition: transform 0.2s; border: 1px solid var(--border);"
+                        onclick="alert('Opening Lab Scan...')">
+                        <div
+                            style="height: 120px; background: #f8fafc; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+                            <i class="fa-solid fa-file-invoice"
+                                style="font-size: 3rem; color: var(--primary); opacity: 0.1;"></i>
+                        </div>
+                        <h4 style="font-size: 0.9rem; margin-top: 10px; padding: 0 10px;">Blood Panel Original</h4>
+                        <p style="font-size: 0.75rem; color: var(--text-light); padding: 0 10px 10px;">Scan • .JPG</p>
+                    </div>
+                    <div
+                        style="height: 120px; border: 2px dashed var(--border); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--text-light);">
+                        <i class="fa-solid fa-cloud-arrow-up" style="font-size: 1.5rem;"></i>
+                        <span style="font-size: 0.8rem;">Upload Private Record</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-grid" style="margin-top: 30px;">
+                <!-- Past Reports List -->
+                <div class="recent-appointments" style="flex:1">
+                    <div class="section-header">
+                        <h2>Past Medical Reports</h2>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Report Name</th>
+                                <th>Doctor</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Blood Chemistry Panel</td>
+                                <td>Dr. Sarah Smith</td>
+                                <td>Oct 12, 2025</td>
+                                <td><a href="#" style="color:var(--primary); text-decoration:none;"><i
+                                            class="fa-solid fa-eye"></i> View</a></td>
+                            </tr>
+                            <tr>
+                                <td>Cardiac Stress Test</td>
+                                <td>Dr. Alan Grant</td>
+                                <td>Aug 05, 2025</td>
+                                <td><a href="#" style="color:var(--primary); text-decoration:none;"><i
+                                            class="fa-solid fa-eye"></i> View</a></td>
+                            </tr>
+                            <tr>
+                                <td>Annual Physical Exam</td>
+                                <td>Dr. Sarah Smith</td>
+                                <td>Jan 20, 2025</td>
+                                <td><a href="#" style="color:var(--primary); text-decoration:none;"><i
+                                            class="fa-solid fa-eye"></i> View</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appointments Section (Hidden by default) -->
+        <div id="appointments-section" style="display: none;">
+            <div class="section-grid">
+                <!-- Book Appointment -->
+                <div class="recent-appointments" style="flex: 2;">
+                    <div class="section-header">
+                        <h2>Find & Book a Doctor</h2>
+                        <div class="search-bar"
+                            style="margin-right: 0; background: white; border: 1px solid var(--border);">
+                            <i class="fa-solid fa-magnifying-glass" style="color: var(--primary);"></i>
+                            <input type="text" id="doctor-search" placeholder="Search by name or specialty..."
+                                style="width: 300px;" onkeyup="searchDoctors(this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Category Filters -->
+                    <div style="display: flex; gap: 10px; margin-top: 20px; overflow-x: auto; padding-bottom: 10px;"
+                        id="category-filters">
+                        <button class="book-btn cat-btn active" onclick="filterDoctorsByCategory('All', this)"
+                            style="white-space: nowrap; background: var(--primary); color: white;">All
+                            Specialists</button>
+                        <button class="book-btn cat-btn" onclick="filterDoctorsByCategory('Cardiology', this)"
+                            style="white-space: nowrap; background: white; color: var(--text-main); border: 1px solid var(--border);">Cardiology</button>
+                        <button class="book-btn cat-btn" onclick="filterDoctorsByCategory('Dental', this)"
+                            style="white-space: nowrap; background: white; color: var(--text-main); border: 1px solid var(--border);">Dental</button>
+                        <button class="book-btn cat-btn" onclick="filterDoctorsByCategory('Neurology', this)"
+                            style="white-space: nowrap; background: white; color: var(--text-main); border: 1px solid var(--border);">Neurology</button>
+                        <button class="book-btn cat-btn" onclick="filterDoctorsByCategory('Orthopedic', this)"
+                            style="white-space: nowrap; background: white; color: var(--text-main); border: 1px solid var(--border);">Orthopedic</button>
+                        <button class="book-btn cat-btn" onclick="filterDoctorsByCategory('Pediatrics', this)"
+                            style="white-space: nowrap; background: white; color: var(--text-main); border: 1px solid var(--border);">Pediatrics</button>
+                    </div>
+
+                    <div class="dashboard-grid" id="doctor-list"
+                        style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin-top: 20px; gap: 20px;">
+                        <!-- Dr. Sarah Smith -->
+                        <div class="stat-card doctor-card" data-category="Cardiology"
+                            style="flex-direction: column; align-items: flex-start; padding: 25px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s; cursor: default;">
+                            <div
+                                style="display: flex; gap: 20px; align-items: flex-start; width: 100%; margin-bottom: 20px;">
+                                <div class="profile-img"
+                                    style="width: 70px; height: 70px; background: #e0f2fe; color: #0ea5e9; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border-radius: 16px;">
+                                    DS</div>
+                                <div style="flex: 1;">
+                                    <h4 class="doc-name" style="color: var(--text-main); font-size: 1.1rem;">Dr. Sarah
+                                        Smith</h4>
+                                    <p class="doc-spec"
+                                        style="color: var(--primary); font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">
+                                        Cardiologist</p>
+                                    <div style="margin-top: 5px; color: #f59e0b; font-size: 0.85rem;">
+                                        <i class="fa-solid fa-star"></i> 4.9 <span
+                                            style="color: var(--text-light);">(120 Reviews)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; background: #f8fafc; padding: 12px; border-radius: 12px;">
+                                <div>
+                                    <p style="font-size: 0.75rem; color: var(--text-light);">Experience</p>
+                                    <p style="font-size: 0.9rem; font-weight: 600;">12+ Years</p>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.75rem; color: var(--text-light);">Consultation</p>
+                                    <p style="font-size: 0.9rem; font-weight: 600;">$50.00</p>
+                                </div>
+                            </div>
+                            <div
+                                style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.85rem; color: #10b981; font-weight: 600;"><i
+                                        class="fa-solid fa-circle-check"></i> Available Today</span>
+                                <button class="book-btn"
+                                    onclick="openBookingModal('Dr. Sarah Smith', 'Cardiologist')">Book Now</button>
+                            </div>
+                        </div>
+
+                        <!-- Dr. Alan Grant -->
+                        <div class="stat-card doctor-card" data-category="Orthopedic"
+                            style="flex-direction: column; align-items: flex-start; padding: 25px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s;">
+                            <div
+                                style="display: flex; gap: 20px; align-items: flex-start; width: 100%; margin-bottom: 20px;">
+                                <div class="profile-img"
+                                    style="width: 70px; height: 70px; background: #f3e8ff; color: #a855f7; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border-radius: 16px;">
+                                    AG</div>
+                                <div style="flex: 1;">
+                                    <h4 class="doc-name" style="color: var(--text-main); font-size: 1.1rem;">Dr. Alan
+                                        Grant</h4>
+                                    <p class="doc-spec"
+                                        style="color: #a855f7; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">
+                                        Orthopedic</p>
+                                    <div style="margin-top: 5px; color: #f59e0b; font-size: 0.85rem;">
+                                        <i class="fa-solid fa-star"></i> 4.8 <span style="color: var(--text-light);">(85
+                                            Reviews)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; background: #f8fafc; padding: 12px; border-radius: 12px;">
+                                <div>
+                                    <p style="font-size: 0.75rem; color: var(--text-light);">Experience</p>
+                                    <p style="font-size: 0.9rem; font-weight: 600;">15+ Years</p>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.75rem; color: var(--text-light);">Consultation</p>
+                                    <p style="font-size: 0.9rem; font-weight: 600;">$65.00</p>
+                                </div>
+                            </div>
+                            <div
+                                style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.85rem; color: #f59e0b; font-weight: 600;"><i
+                                        class="fa-solid fa-clock"></i> Next: Tomorrow</span>
+                                <button class="book-btn" onclick="openBookingModal('Dr. Alan Grant', 'Orthopedic')">Book
+                                    Now</button>
+                            </div>
+                        </div>
+
+                        <!-- Dr. Emily White -->
+                        <div class="stat-card doctor-card" data-category="Neurology"
+                            style="flex-direction: column; align-items: flex-start; padding: 25px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s;">
+                            <div
+                                style="display: flex; gap: 20px; align-items: flex-start; width: 100%; margin-bottom: 20px;">
+                                <div class="profile-img"
+                                    style="width: 70px; height: 70px; background: #fef2f2; color: #ef4444; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border-radius: 16px;">
+                                    EW</div>
+                                <div style="flex: 1;">
+                                    <h4 class="doc-name" style="color: var(--text-main); font-size: 1.1rem;">Dr. Emily
+                                        White</h4>
+                                    <p class="doc-spec"
+                                        style="color: #ef4444; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">
+                                        Neurologist</p>
+                                    <div style="margin-top: 5px; color: #f59e0b; font-size: 0.85rem;">
+                                        <i class="fa-solid fa-star"></i> 5.0 <span style="color: var(--text-light);">(42
+                                            Reviews)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; background: #f8fafc; padding: 12px; border-radius: 12px;">
+                                <div>
+                                    <p style="font-size: 0.75rem; color: var(--text-light);">Experience</p>
+                                    <p style="font-size: 0.9rem; font-weight: 600;">8+ Years</p>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.75rem; color: var(--text-light);">Consultation</p>
+                                    <p style="font-size: 0.9rem; font-weight: 600;">$90.00</p>
+                                </div>
+                            </div>
+                            <div
+                                style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.85rem; color: #10b981; font-weight: 600;"><i
+                                        class="fa-solid fa-circle-check"></i> Available Today</span>
+                                <button class="book-btn"
+                                    onclick="openBookingModal('Dr. Emily White', 'Neurologist')">Book Now</button>
+                            </div>
+                        </div>
+
+                        <!-- Dr. Michael Chen -->
+                        <div class="stat-card doctor-card" data-category="Pediatrics"
+                            style="flex-direction: column; align-items: flex-start; padding: 25px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s;">
+                            <div
+                                style="display: flex; gap: 20px; align-items: flex-start; width: 100%; margin-bottom: 20px;">
+                                <div class="profile-img"
+                                    style="width: 70px; height: 70px; background: #ecfdf5; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border-radius: 16px;">
+                                    MC</div>
+                                <div style="flex: 1;">
+                                    <h4 class="doc-name" style="color: var(--text-main); font-size: 1.1rem;">Dr. Michael
+                                        Chen</h4>
+                                    <p class="doc-spec"
+                                        style="color: #10b981; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">
+                                        Pediatrics</p>
+                                    <div style="margin-top: 5px; color: #f59e0b; font-size: 0.85rem;">
+                                        <i class="fa-solid fa-star"></i> 4.7 <span style="color: var(--text-light);">(64
+                                            Reviews)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; background: #f8fafc; padding: 12px; border-radius: 12px;">
+                                <div>
+                                    <p style="font-size: 0.75rem; color: var(--text-light);">Experience</p>
+                                    <p style="font-size: 0.9rem; font-weight: 600;">10+ Years</p>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.75rem; color: var(--text-light);">Consultation</p>
+                                    <p style="font-size: 0.9rem; font-weight: 600;">$45.00</p>
+                                </div>
+                            </div>
+                            <div
+                                style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.85rem; color: #10b981; font-weight: 600;"><i
+                                        class="fa-solid fa-circle-check"></i> Available Today</span>
+                                <button class="book-btn"
+                                    onclick="openBookingModal('Dr. Michael Chen', 'Pediatrics')">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming -->
+                <div class="recent-appointments" style="flex: 1;">
+                    <div class="section-header">
+                        <h2>Your Schedule</h2>
+                    </div>
+                    <div style="border-left: 3px solid var(--primary); padding-left: 15px; margin-bottom: 20px;">
+                        <p style="color: var(--text-light); font-size: 0.8rem; margin-bottom: 5px;">DECEMBER 28</p>
+                        <h4 style="color: var(--text-main);">Dental Checkup</h4>
+                        <p style="color: var(--text-light); font-size: 0.9rem;"><i class="fa-solid fa-user-doctor"></i>
+                            Dr. James • 10:00 AM</p>
+                    </div>
+                    <div style="border-left: 3px solid #10b981; padding-left: 15px;">
+                        <p style="color: var(--text-light); font-size: 0.8rem; margin-bottom: 5px;">JANUARY 05</p>
+                        <h4 style="color: var(--text-main);">Routine Follow-up</h4>
+                        <p style="color: var(--text-light); font-size: 0.9rem;"><i class="fa-solid fa-user-doctor"></i>
+                            Dr. Sarah Smith • 02:30 PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab Section (Hidden by default) -->
+        <div id="lab-section" style="display: none;">
+            <!-- Lab Overview Cards -->
+            <div class="dashboard-grid" style="margin-bottom: 30px;">
+                <div class="stat-card" style="border-bottom: 4px solid #10b981;">
+                    <div class="icon-box green-bg"><i class="fa-solid fa-vial-circle-check"></i></div>
+                    <div class="stat-info">
+                        <p style="color: var(--text-light); font-size: 0.8rem;">Total Tests (YTD)</p>
+                        <h3>24</h3>
+                    </div>
+                </div>
+                <div class="stat-card" style="border-bottom: 4px solid #ef4444;">
+                    <div class="icon-box orange-bg"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="stat-info">
+                        <p style="color: var(--text-light); font-size: 0.8rem;">Attention Required</p>
+                        <h3>2 High/Low</h3>
+                    </div>
+                </div>
+                <div class="stat-card" style="border-bottom: 4px solid var(--primary);">
+                    <div class="icon-box blue-bg"><i class="fa-solid fa-stamp"></i></div>
+                    <div class="stat-info">
+                        <p style="color: var(--text-light); font-size: 0.8rem;">Verified Reports</p>
+                        <h3>100%</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 30px;">
+                <div class="recent-appointments">
+                    <div class="section-header" style="margin-bottom: 20px;">
+                        <h2>Detailed Biomarker Analysis</h2>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="book-btn"
+                                style="background: white; color: var(--text-main); border: 1px solid var(--border);"><i
+                                    class="fa-solid fa-filter"></i> Filter</button>
+                            <button class="book-btn"><i class="fa-solid fa-file-pdf"></i> Export All</button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Test Name / Biomarker</th>
+                                <th>Your Result</th>
+                                <th>Reference Range</th>
+                                <th>Visual Indicator</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 600;">Glucose (Fasting)</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-light);">Metabolic Panel</div>
+                                </td>
+                                <td>95 <span style="font-size: 0.7rem; color: var(--text-light);">mg/dL</span></td>
+                                <td>70 - 99</td>
+                                <td style="width: 120px;">
+                                    <div
+                                        style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 10px; position: relative;">
+                                        <div
+                                            style="position: absolute; left: 80%; top: -4px; width: 14px; height: 14px; background: #10b981; border: 2px solid white; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="result-tag normal">Optimal</span></td>
+                                <td>Dec 20, 2025</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 600;">Vitamin D3</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-light);">Immune Function</div>
+                                </td>
+                                <td style="color: #f59e0b; font-weight: 700;">22 <span
+                                        style="font-size: 0.7rem;">ng/mL</span></td>
+                                <td>30 - 100</td>
+                                <td style="width: 120px;">
+                                    <div
+                                        style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 10px; position: relative;">
+                                        <div
+                                            style="position: absolute; left: 15%; top: -4px; width: 14px; height: 14px; background: #f59e0b; border: 2px solid white; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="result-tag warning">Sub-optimal</span></td>
+                                <td>Dec 20, 2025</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 600;">Cholesterol (LDL)</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-light);">Lipid Panel</div>
+                                </td>
+                                <td>110 <span style="font-size: 0.7rem; color: var(--text-light);">mg/dL</span></td>
+                                <td>
+                                    < 130</td>
+                                <td style="width: 120px;">
+                                    <div
+                                        style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 10px; position: relative;">
+                                        <div
+                                            style="position: absolute; left: 60%; top: -4px; width: 14px; height: 14px; background: #10b981; border: 2px solid white; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="result-tag normal">Normal</span></td>
+                                <td>Dec 20, 2025</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 600;">Hemoglobin</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-light);">Complete Blood Count
+                                    </div>
+                                </td>
+                                <td>14.5 <span style="font-size: 0.7rem; color: var(--text-light);">g/dL</span></td>
+                                <td>13.5 - 17.5</td>
+                                <td style="width: 120px;">
+                                    <div
+                                        style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 10px; position: relative;">
+                                        <div
+                                            style="position: absolute; left: 45%; top: -4px; width: 14px; height: 14px; background: #10b981; border: 2px solid white; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="result-tag normal">Normal</span></td>
+                                <td>Dec 20, 2025</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Lab Information Sidebar -->
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="stat-card"
+                        style="flex-direction: column; align-items: flex-start; padding: 20px; background: #faf5ff; border: 1px solid #e9d5ff;">
+                        <h4 style="color: #7e22ce; margin-bottom: 10px;"><i class="fa-solid fa-circle-info"></i>
+                            Physician's Note</h4>
+                        <p style="font-size: 0.85rem; line-height: 1.5; color: #581c87;">"Overall blood work looks
+                            excellent. Vitamin D levels are slightly low; I've added a supplement reminder to your daily
+                            schedule."</p>
+                        <div style="margin-top: 15px; display: flex; align-items: center; gap: 10px;">
+                            <div class="profile-img" style="width: 32px; height: 32px; font-size: 0.8rem;">SS</div>
+                            <span style="font-size: 0.8rem; font-weight: 600;">Dr. Sarah Smith</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card" style="flex-direction: column; align-items: flex-start; padding: 20px;">
+                        <h4 style="margin-bottom: 15px;">Upcoming Tests</h4>
+                        <div style="width: 100%; display: flex; flex-direction: column; gap: 12px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 12px; padding: 10px; background: #f8fafc; border-radius: 10px;">
+                                <div style="color: var(--primary);"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                                <div>
+                                    <p style="font-size: 0.8rem; font-weight: 600;">Annual Screen</p>
+                                    <p style="font-size: 0.7rem; color: var(--text-light);">June 2026</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Book Appointment -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3>Book Appointment</h3>
+                <button class="close-modal" onclick="closeModal('bookingModal')">&times;</button>
+            </div>
+            <div
+                style="display: flex; gap: 15px; align-items: center; margin-bottom: 25px; background: #f8fafc; padding: 15px; border-radius: 12px;">
+                <div id="modal-doc-img" class="profile-img" style="width: 50px; height: 50px;">DS</div>
+                <div>
+                    <h4 id="modal-doc-name" style="color: var(--text-main);">Dr. Sarah Smith</h4>
+                    <p id="modal-doc-spec" style="color: var(--text-light); font-size: 0.85rem;">Cardiologist</p>
+                </div>
+            </div>
+            <form id="bookingForm" onsubmit="confirmBooking(event)">
+                <div class="form-group">
+                    <label>Select Date</label>
+                    <input type="date" required id="bookingDate" value="2025-12-26">
+                </div>
+                <div class="form-group">
+                    <label>Select Preferred Time</label>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px;">
+                        <button type="button" class="book-btn slot-btn" onclick="selectSlot(this)">09:00 AM</button>
+                        <button type="button" class="book-btn slot-btn" onclick="selectSlot(this)">10:30 AM</button>
+                        <button type="button" class="book-btn slot-btn" onclick="selectSlot(this)">11:45 AM</button>
+                        <button type="button" class="book-btn slot-btn" onclick="selectSlot(this)">02:00 PM</button>
+                        <button type="button" class="book-btn slot-btn" onclick="selectSlot(this)">03:30 PM</button>
+                        <button type="button" class="book-btn slot-btn" onclick="selectSlot(this)">04:15 PM</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Reason for Visit</label>
+                    <textarea rows="3" placeholder="Explain your symptoms or reason for consulting..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn" style="width: 100%; padding: 15px;">Confirm Booking
+                    Request</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.getElementById('reports-section').style.display = 'none';
+            document.getElementById('appointments-section').style.display = 'none';
+            document.getElementById('lab-section').style.display = 'none';
+
+            // Show requested section
+            document.getElementById(sectionId + '-section').style.display = 'block';
+
+            // Update active state in sidebar
+            const links = document.querySelectorAll('.nav-links a');
+            links.forEach(link => {
+                link.classList.remove('active');
+                if (link.innerHTML.toLowerCase().includes(sectionId)) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Update header title based on section
+            const welcomeMsg = document.getElementById('welcome-msg');
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            const name = user ? user.name : 'Patient';
+
+            if (sectionId === 'reports') {
+                welcomeMsg.textContent = `${name}'s Medical Report`;
+            } else if (sectionId === 'appointments') {
+                welcomeMsg.textContent = 'Book an Appointment';
+            } else if (sectionId === 'lab') {
+                welcomeMsg.textContent = 'Laboratory Results';
+            }
+        }
+
+        // Initialize user info
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.role === 'patient') {
+            document.getElementById('welcome-msg').textContent = `${user.name}'s Medical Report`;
+        }
+
+        // Modal Logic
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+            setTimeout(() => document.getElementById(id).classList.add('active'), 10);
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            setTimeout(() => document.getElementById(id).style.display = 'none', 300);
+        }
+
+        function openBookingModal(name, spec) {
+            document.getElementById('modal-doc-name').textContent = name;
+            document.getElementById('modal-doc-spec').textContent = spec;
+            document.getElementById('modal-doc-img').textContent = name.split(' ').map(n => n[0]).join('');
+            openModal('bookingModal');
+        }
+
+        function selectSlot(btn) {
+            document.querySelectorAll('.slot-btn').forEach(b => {
+                b.style.background = 'white';
+                b.style.color = 'var(--text-main)';
+                b.style.border = '1px solid var(--border)';
+            });
+            btn.style.background = 'var(--primary)';
+            btn.style.color = 'white';
+            btn.style.border = '1px solid var(--primary)';
+        }
+
+        function filterDoctorsByCategory(category, btn) {
+            // Update Active Class
+            document.querySelectorAll('.cat-btn').forEach(b => {
+                b.classList.remove('active');
+                b.style.background = 'white';
+                b.style.color = 'var(--text-main)';
+            });
+            btn.classList.add('active');
+            btn.style.background = 'var(--primary)';
+            btn.style.color = 'white';
+
+            const cards = document.querySelectorAll('.doctor-card');
+            cards.forEach(card => {
+                if (category === 'All' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function searchDoctors(query) {
+            const cards = document.querySelectorAll('.doctor-card');
+            cards.forEach(card => {
+                const name = card.querySelector('.doc-name').textContent.toLowerCase();
+                const spec = card.querySelector('.doc-spec').textContent.toLowerCase();
+                if (name.includes(query.toLowerCase()) || spec.includes(query.toLowerCase())) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function confirmBooking(e) {
+            e.preventDefault();
+            const toast = document.createElement('div');
+            toast.style.cssText = 'position: fixed; bottom: 30px; right: 30px; background: #10b981; color: white; padding: 20px 30px; border-radius: 12px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); z-index: 9999; animation: slideIn 0.3s ease;';
+            toast.innerHTML = '<i class="fa-solid fa-check-circle" style="margin-right: 10px;"></i> Appointment Request Sent Successfully!';
+            document.body.appendChild(toast);
+            closeModal('bookingModal');
+            setTimeout(() => toast.remove(), 4000);
+        }
+    </script>
+</body>
+
+</html>

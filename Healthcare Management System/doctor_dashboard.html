@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Dashboard - Healthcare Management</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .section-container {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .section-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Specialized Profile Styles */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .large-profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #0ea5e9;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .profile-info h2 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .profile-info p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-card h4 {
+            margin-bottom: 15px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        /* Message UI */
+        .chat-container {
+            display: flex;
+            height: 500px;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .chat-sidebar {
+            width: 300px;
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+        }
+
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-list-item {
+            padding: 20px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border);
+            transition: 0.3s;
+        }
+
+        .chat-list-item:hover {
+            background: #f8fafc;
+        }
+
+        .chat-list-item.active {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* Settings Specialized Styles */
+        .settings-tab {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            background: white;
+            border: none;
+            border-radius: 12px;
+            color: var(--text-light);
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: left;
+        }
+
+        .settings-tab:hover {
+            background: #f1f5f9;
+            color: var(--text-main);
+        }
+
+        .settings-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .settings-tab i {
+            font-size: 1.1rem;
+        }
+
+        /* Toggle Switch UI */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e2e8f0;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: var(--primary);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(24px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        /* Profile Banner Styles */
+        .profile-banner {
+            height: 180px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            border-radius: 24px 24px 0 0;
+            position: relative;
+            margin-bottom: -60px;
+        }
+
+        .expertise-tag {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .timeline-box {
+            border-left: 2px solid #e2e8f0;
+            padding-left: 20px;
+            margin-left: 10px;
+            position: relative;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -7px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="logo" style="cursor: pointer;" onclick="showSection('dashboard')">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <span>HealthCare+</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="active" onclick="showSection('dashboard')"><i class="fa-solid fa-table-columns"></i>
+                    Dashboard</a></li>
+            <li><a href="#" onclick="showSection('appointments')"><i class="fa-regular fa-calendar-check"></i>
+                    Appointments</a></li>
+            <li><a href="#" onclick="showSection('patients')"><i class="fa-solid fa-user-injured"></i> My Patients</a>
+            </li>
+            <li><a href="#" onclick="showSection('prescriptions')"><i class="fa-solid fa-clipboard-list"></i>
+                    Prescriptions</a></li>
+            <li><a href="#" onclick="showSection('messages')"><i class="fa-regular fa-message"></i> Messages</a></li>
+            <li><a href="#" onclick="showSection('settings')"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="#" onclick="showSection('profile')"><i class="fa-solid fa-user-doctor"></i> My Profile</a></li>
+        </ul>
+        <a href="index.html" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header>
+            <div class="header-title">
+                <h1 id="welcome-msg">Dashboard Overview</h1>
+                <p id="sub-msg">Welcome back, Dr. Smith.</p>
+            </div>
+            <div class="user-profile">
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search patients..." onkeyup="filterPatients(this.value)">
+                </div>
+            </div>
+        </header>
+
+        <!-- 1. DASHBOARD SECTION -->
+        <div id="dashboard-section" class="section-container active">
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="icon-box blue-bg"><i class="fa-solid fa-user-group"></i></div>
+                    <div class="stat-info">
+                        <h3>1,245</h3>
+                        <p>Total Patients</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-box green-bg"><i class="fa-regular fa-calendar-check"></i></div>
+                    <div class="stat-info">
+                        <h3>24</h3>
+                        <p>Appointments Today</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-box purple-bg"><i class="fa-solid fa-bed-pulse"></i></div>
+                    <div class="stat-info">
+                        <h3>08</h3>
+                        <p>Surgeries</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-box orange-bg"><i class="fa-solid fa-star-half-stroke"></i></div>
+                    <div class="stat-info">
+                        <h3>4.8</h3>
+                        <p>Average Rating</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-grid" style="grid-template-columns: 2fr 1fr; margin-top: 30px;">
+                <!-- Live Capacity & Charts -->
+                <div class="recent-appointments">
+                    <div class="section-header">
+                        <h2>Live Clinic Performance</h2>
+                    </div>
+                    <div class="dashboard-grid"
+                        style="grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px;">
+                        <div style="background: #f8fafc; padding: 20px; border-radius: 16px; text-align: center;">
+                            <h4 style="color: var(--text-light); font-size: 0.8rem; margin-bottom: 10px;">BED OCCUPANCY
+                            </h4>
+                            <div
+                                style="width: 70px; height: 70px; border: 5px solid #e2e8f0; border-top: 5px solid var(--primary); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;">
+                                <span style="font-weight: bold; color: var(--primary);">82%</span>
+                            </div>
+                            <p style="font-size: 0.85rem; color: #10b981;">18 Beds Available</p>
+                        </div>
+                        <div style="background: #f8fafc; padding: 20px; border-radius: 16px; text-align: center;">
+                            <h4 style="color: var(--text-light); font-size: 0.8rem; margin-bottom: 10px;">AVG. WAIT TIME
+                            </h4>
+                            <div
+                                style="font-size: 2rem; font-weight: bold; color: var(--text-main); margin-bottom: 5px;">
+                                14</div>
+                            <p style="font-size: 0.8rem; color: var(--text-light);">Minutes</p>
+                        </div>
+                        <div style="background: #f8fafc; padding: 20px; border-radius: 16px; text-align: center;">
+                            <h4 style="color: var(--text-light); font-size: 0.8rem; margin-bottom: 10px;">NURSES ON CALL
+                            </h4>
+                            <div
+                                style="font-size: 2rem; font-weight: bold; color: var(--text-main); margin-bottom: 5px;">
+                                32</div>
+                            <p style="font-size: 0.8rem; color: #10b981;">Fully Staffed</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 25px;">
+                        <h4 style="margin-bottom: 15px; color: var(--text-light);">Patient Distribution (Weekly)</h4>
+                        <div class="chart-container" style="height: 120px;">
+                            <div class="chart-bar" style="height: 40%;" data-label="Mon"></div>
+                            <div class="chart-bar" style="height: 60%;" data-label="Tue"></div>
+                            <div class="chart-bar" style="height: 85%;" data-label="Wed"></div>
+                            <div class="chart-bar" style="height: 50%;" data-label="Thu"></div>
+                            <div class="chart-bar" style="height: 70%;" data-label="Fri"></div>
+                            <div class="chart-bar" style="height: 30%;" data-label="Sat"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Log -->
+                <div class="recent-appointments">
+                    <div class="section-header">
+                        <h2>Recent Activity</h2>
+                    </div>
+                    <div id="activity-log" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+                        <div
+                            style="display: flex; gap: 12px; align-items: flex-start; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+                            <div
+                                style="width: 35px; height: 35px; border-radius: 50%; background: #e0f2fe; color: var(--primary); display: flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                            <div>
+                                <p style="font-size: 0.85rem; font-weight: 600;">New Appointment</p>
+                                <p style="font-size: 0.8rem; color: var(--text-light);">Emma Watson (Routine)</p>
+                                <p style="font-size: 0.75rem; color: var(--text-light); margin-top: 2px;">2 mins ago</p>
+                            </div>
+                        </div>
+                        <div
+                            style="display: flex; gap: 12px; align-items: flex-start; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+                            <div
+                                style="width: 35px; height: 35px; border-radius: 50%; background: #dcfce7; color: #10b981; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div>
+                                <p style="font-size: 0.85rem; font-weight: 600;">Prescription Sent</p>
+                                <p style="font-size: 0.8rem; color: var(--text-light);">To John Doe (Amoxicillin)</p>
+                                <p style="font-size: 0.75rem; color: var(--text-light); margin-top: 2px;">15 mins ago
+                                </p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 12px; align-items: flex-start;">
+                            <div
+                                style="width: 35px; height: 35px; border-radius: 50%; background: #fee2e2; color: #ef4444; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <div>
+                                <p style="font-size: 0.85rem; font-weight: 600;">Emergency Check</p>
+                                <p style="font-size: 0.8rem; color: var(--text-light);">Robert Johnson (Room 202)</p>
+                                <p style="font-size: 0.75rem; color: var(--text-light); margin-top: 2px;">1 hour ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-grid" style="margin-top: 30px;">
+                <div class="recent-appointments">
+                    <div class="section-header">
+                        <h2>Recent Appointments</h2><a href="#" class="view-all"
+                            onclick="showSection('appointments')">View All</a>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Patient Name</th>
+                                <th>Diagnosis</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="patient-info">
+                                        <div class="profile-img"
+                                            style="width:30px;height:30px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:0.8rem">
+                                            JD</div><span>John Doe</span>
+                                    </div>
+                                </td>
+                                <td>Fever & Cold</td>
+                                <td>09:00 AM</td>
+                                <td><span class="status confirmed">Confirmed</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-info">
+                                        <div class="profile-img"
+                                            style="width:30px;height:30px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:0.8rem">
+                                            AS</div><span>Alice Smith</span>
+                                    </div>
+                                </td>
+                                <td>Dental Checkup</td>
+                                <td>10:30 AM</td>
+                                <td><span class="status pending">Pending</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doctors-list">
+                    <div class="section-header">
+                        <h2>Registration Updates</h2>
+                    </div>
+                    <div class="doctor-card" style="padding: 15px; background: #fffbeb; border: 1px solid #fef3c7;">
+                        <div class="doc-info">
+                            <h4 style="color: #92400e;">Missing Documentation</h4>
+                            <p style="font-size: 0.8rem; color: #b45309;">Robert Johnson needs to upload ID proof.</p>
+                            <button class="book-btn" style="margin-top:10px; background: #d97706;">Notify
+                                Patient</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. APPOINTMENTS SECTION -->
+        <div id="appointments-section" class="section-container">
+            <!-- Filter Bar -->
+            <div class="section-grid" style="margin-bottom: 25px;">
+                <div class="stat-card" style="padding: 10px 25px; border-radius: 16px; flex-direction: row; gap: 20px;">
+                    <button id="btn-today" class="view-all active" onclick="switchTab('today')"
+                        style="background: none; border: none; font-weight: 600; cursor: pointer;">Today (8)</button>
+                    <button id="btn-upcoming" class="view-all" onclick="switchTab('upcoming')"
+                        style="background: none; border: none; font-weight: 600; color: var(--text-light); cursor: pointer;">Upcoming
+                        (12)</button>
+                    <button id="btn-completed" class="view-all" onclick="switchTab('completed')"
+                        style="background: none; border: none; font-weight: 600; color: var(--text-light); cursor: pointer;">Completed</button>
+                    <div style="flex: 1;"></div>
+                    <button class="book-btn" onclick="openModal('manualEntryModal')"><i class="fa-solid fa-plus"></i>
+                        Schedule New</button>
+                </div>
+            </div>
+
+            <div class="section-grid" style="grid-template-columns: 2fr 1fr;">
+                <!-- Main Schedule List -->
+                <div class="recent-appointments">
+                    <div class="section-header">
+                        <h2>Patient Queue - Dec 26, 2025</h2>
+                        <div class="search-bar" style="margin-right: 0;">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Search by name or ID...">
+                        </div>
+                    </div>
+                    <div id="appointment-list-container"
+                        style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                        <!-- Content will be injected by switchTab() -->
+                    </div>
+                </div>
+
+                <!-- Specialized Timeline / Slot Tracker -->
+                <div class="recent-appointments">
+                    <div class="section-header">
+                        <h2>Live Slot Tracker</h2>
+                    </div>
+                    <div class="timeline"
+                        style="position: relative; padding-left: 20px; border-left: 2px solid var(--border); margin-left: 10px; margin-top: 20px;">
+                        <div class="timeline-item" style="margin-bottom: 25px; position: relative; opacity: 0.6;">
+                            <div
+                                style="position: absolute; left: -26px; top: 0; width: 10px; height: 10px; border-radius: 50%; background: #10b981; border: 2px solid white;">
+                            </div>
+                            <h5 style="color: #10b981;">08:00 AM</h5>
+                            <p style="font-size: 0.8rem; font-weight: 600;">Morning Rounds</p>
+                            <span style="font-size: 0.7rem; color: #10b981;">Completed</span>
+                        </div>
+                        <div class="timeline-item" style="margin-bottom: 25px; position: relative;">
+                            <div
+                                style="position: absolute; left: -26px; top: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--primary); border: 3px solid #e0f2fe; left: -28px;">
+                            </div>
+                            <h5 style="color: var(--primary);">09:00 AM</h5>
+                            <p style="font-size: 0.8rem; font-weight: 600;">Consultation: John Doe</p>
+                            <span style="font-size: 0.7rem; color: var(--primary); font-weight: 700;">LIVE NOW</span>
+                        </div>
+                        <div class="timeline-item" style="margin-bottom: 25px; position: relative;">
+                            <div
+                                style="position: absolute; left: -26px; top: 0; width: 10px; height: 10px; border-radius: 50%; background: #94a3b8; border: 2px solid white;">
+                            </div>
+                            <h5 style="color: #94a3b8;">10:00 AM</h5>
+                            <p style="font-size: 0.8rem; font-weight: 600;">Available Slot</p>
+                        </div>
+                        <div class="timeline-item" style="margin-bottom: 25px; position: relative;">
+                            <div
+                                style="position: absolute; left: -26px; top: 0; width: 10px; height: 10px; border-radius: 50%; background: #94a3b8; border: 2px solid white;">
+                            </div>
+                            <h5 style="color: #94a3b8;">10:30 AM</h5>
+                            <p style="font-size: 0.8rem; font-weight: 600;">Dental: Alice Smith</p>
+                        </div>
+                        <div class="timeline-item" style="position: relative;">
+                            <div
+                                style="position: absolute; left: -26px; top: 0; width: 10px; height: 10px; border-radius: 50%; background: #94a3b8; border: 2px solid white;">
+                            </div>
+                            <h5 style="color: #94a3b8;">11:45 AM</h5>
+                            <p style="font-size: 0.8rem; font-weight: 600;">Ortho: Robert J.</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px; padding: 20px; background: #eff6ff; border-radius: 16px;">
+                        <h4 style="color: var(--primary); font-size: 0.9rem; margin-bottom: 10px;">Clinical Summary</h4>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span style="font-size: 0.8rem; color: var(--text-light);">Utilized Time</span>
+                            <span style="font-size: 0.8rem; font-weight: 600;">4.5 hrs</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <span style="font-size: 0.8rem; color: var(--text-light);">Efficiency Rate</span>
+                            <span style="font-size: 0.8rem; font-weight: 600; color: #10b981;">92%</span>
+                        </div>
+                        <div
+                            style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 10px; overflow: hidden;">
+                            <div style="width: 92%; height: 100%; background: var(--primary);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. PATIENTS SECTION -->
+        <div id="patients-section" class="section-container">
+            <div class="recent-appointments">
+                <div class="section-header">
+                    <h2>My Patients List</h2>
+                    <div class="search-bar" style="margin-right:0"><i class="fa-solid fa-magnifying-glass"></i><input
+                            type="text" placeholder="Search Patients..."></div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Patient ID</th>
+                            <th>Name</th>
+                            <th>Age/Gender</th>
+                            <th>Last Visit</th>
+                            <th>Condition</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#P-1001</td>
+                            <td>John Doe</td>
+                            <td>25 / M</td>
+                            <td>Dec 10, 2025</td>
+                            <td>Asthma</td>
+                            <td><button class="book-btn" style="padding:5px 10px"
+                                    onclick="openPatientDetail('John Doe')">Records</button></td>
+                        </tr>
+                        <tr>
+                            <td>#P-1002</td>
+                            <td>Alice Smith</td>
+                            <td>32 / F</td>
+                            <td>Nov 22, 2025</td>
+                            <td>Diabetes</td>
+                            <td><button class="book-btn" style="padding:5px 10px"
+                                    onclick="openPatientDetail('Alice Smith')">Records</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 4. PRESCRIPTIONS SECTION -->
+        <div id="prescriptions-section" class="section-container">
+            <div class="recent-appointments">
+                <div class="section-header">
+                    <h2>Recent Prescriptions</h2><button class="book-btn" onclick="openModal('prescriptionModal')"><i
+                            class="fa-solid fa-pen-to-square"></i> New
+                        Prescription</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Patient</th>
+                            <th>Medication</th>
+                            <th>Dosage</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Dec 20, 2025</td>
+                            <td>John Doe</td>
+                            <td>Amoxicillin</td>
+                            <td>500mg</td>
+                            <td>7 Days</td>
+                        </tr>
+                        <tr>
+                            <td>Dec 15, 2025</td>
+                            <td>Alice Smith</td>
+                            <td>Metformin</td>
+                            <td>1000mg</td>
+                            <td>30 Days</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 5. MESSAGES SECTION -->
+        <div id="messages-section" class="section-container">
+            <div class="chat-container" style="height: 650px;">
+                <!-- Chat Sidebar -->
+                <div class="chat-sidebar">
+                    <div style="padding: 20px; border-bottom: 1px solid var(--border);">
+                        <div class="search-bar" style="margin-right: 0; width: 100%;">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Search conversations..." style="width: 100%;">
+                        </div>
+                    </div>
+                    <div id="chat-list">
+                        <div class="chat-list-item active" onclick="selectChat('John Doe', 'Online')">
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <div class="profile-img"
+                                    style="width: 45px; height: 45px; background: #e0f2fe; color: var(--primary); display: flex; align-items: center; justify-content: center;">
+                                    JD</div>
+                                <div style="flex: 1;">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <h4 style="font-size: 0.95rem;">John Doe</h4>
+                                        <span style="font-size: 0.75rem; color: var(--text-light);">12:45 PM</span>
+                                    </div>
+                                    <p
+                                        style="font-size: 0.8rem; color: var(--text-light); text-overflow: ellipsis; white-space: nowrap; overflow: hidden; width: 180px;">
+                                        Doctor, is my result ready?</p>
+                                </div>
+                                <div style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-list-item" onclick="selectChat('Alice Smith', 'Away')">
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <div class="profile-img"
+                                    style="width: 45px; height: 45px; background: #fef2f2; color: #ef4444; display: flex; align-items: center; justify-content: center;">
+                                    AS</div>
+                                <div style="flex: 1;">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <h4 style="font-size: 0.95rem;">Alice Smith</h4>
+                                        <span style="font-size: 0.75rem; color: var(--text-light);">Yesterday</span>
+                                    </div>
+                                    <p style="font-size: 0.8rem; color: var(--text-light);">Thank you for the checkup.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-list-item" onclick="selectChat('Robert J.', 'Offline')">
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <div class="profile-img"
+                                    style="width: 45px; height: 45px; background: #f3e8ff; color: #a855f7; display: flex; align-items: center; justify-content: center;">
+                                    RJ</div>
+                                <div style="flex: 1;">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <h4 style="font-size: 0.95rem;">Robert Johnson</h4>
+                                        <span style="font-size: 0.75rem; color: var(--text-light);">Dec 24</span>
+                                    </div>
+                                    <p style="font-size: 0.8rem; color: var(--text-light);">I'm feeling much better.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Main Area -->
+                <div class="chat-main">
+                    <!-- Chat Header -->
+                    <div
+                        style="padding: 15px 25px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: #fdfdfd;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="profile-img" id="active-chat-img"
+                                style="width: 40px; height: 40px; background: #e0f2fe; color: var(--primary); display: flex; align-items: center; justify-content: center;">
+                                JD</div>
+                            <div>
+                                <h4 id="active-chat-name" style="font-size: 1rem;">John Doe</h4>
+                                <p id="active-chat-status" style="font-size: 0.8rem; color: #10b981;"><i
+                                        class="fa-solid fa-circle" style="font-size: 0.5rem; margin-right: 5px;"></i>
+                                    Online</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 15px; color: var(--text-light); cursor: pointer;">
+                            <i class="fa-solid fa-phone"></i>
+                            <i class="fa-solid fa-video"></i>
+                            <i class="fa-solid fa-circle-info"></i>
+                        </div>
+                    </div>
+
+                    <!-- Messages History -->
+                    <div id="chat-history"
+                        style="flex: 1; overflow-y: auto; padding: 25px; display: flex; flex-direction: column; gap: 15px; background: #fafafa;">
+                        <div
+                            style="align-self: center; background: white; padding: 5px 15px; border-radius: 100px; font-size: 0.75rem; color: var(--text-light); margin-bottom: 10px; border: 1px solid var(--border);">
+                            Today, 12:30 PM</div>
+
+                        <div
+                            style="background: white; padding: 15px; border-radius: 12px 12px 12px 2px; max-width: 70%; align-self: flex-start; box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid var(--border);">
+                            <p style="font-size: 0.95rem; color: var(--text-main);">Doctor, is my latest blood work
+                                result ready for review? I noticed a new upload in the Lab Results section.</p>
+                            <span
+                                style="font-size: 0.7rem; color: var(--text-light); margin-top: 5px; display: block; text-align: right;">12:45
+                                PM</span>
+                        </div>
+
+                        <div
+                            style="background: var(--primary); color: white; padding: 15px; border-radius: 12px 12px 2px 12px; max-width: 70%; align-self: flex-end; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.2);">
+                            <p style="font-size: 0.95rem;">Yes John, I've just reviewed it. Everything looks normal, but
+                                your Vitamin D is slightly low. I've added a prescription for supplements.</p>
+                            <span
+                                style="font-size: 0.7rem; color: rgba(255,255,255,0.8); margin-top: 5px; display: block; text-align: right;">12:48
+                                PM</span>
+                        </div>
+                    </div>
+
+                    <!-- Message Input Area -->
+                    <div style="padding: 20px; border-top: 1px solid var(--border); background: white;">
+                        <div
+                            style="display: flex; gap: 12px; background: #f8fafc; padding: 5px; border-radius: 16px; border: 1px solid var(--border);">
+                            <button
+                                style="background: none; border: none; padding: 10px; color: var(--text-light); cursor: pointer;"><i
+                                    class="fa-solid fa-paperclip"></i></button>
+                            <input id="chat-input" type="text" placeholder="Type a secure message..."
+                                style="flex: 1; background: none; border: none; padding: 10px; font-family: inherit; font-size: 0.95rem; outline: none;">
+                            <button class="book-btn" onclick="sendChat()"
+                                style="border-radius: 12px; padding: 8px 20px;"><i class="fa-solid fa-paper-plane"></i>
+                                Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. SETTINGS SECTION -->
+        <div id="settings-section" class="section-container">
+            <div style="display: grid; grid-template-columns: 280px 1fr; gap: 30px;">
+                <!-- Sidebar Tabs for Settings -->
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="settings-tab active" onclick="switchSettingsTab('account')">
+                        <i class="fa-solid fa-user-shield"></i> Account & Security
+                    </button>
+                    <button class="settings-tab" onclick="switchSettingsTab('notifications')">
+                        <i class="fa-solid fa-bell"></i> Notification Preferences
+                    </button>
+                    <button class="settings-tab" onclick="switchSettingsTab('display')">
+                        <i class="fa-solid fa-display"></i> Display & Theme
+                    </button>
+                    <button class="settings-tab" onclick="switchSettingsTab('privacy')">
+                        <i class="fa-solid fa-lock"></i> Privacy & Data
+                    </button>
+                </div>
+
+                <!-- Settings Content Area -->
+                <div id="settings-content"
+                    style="background: white; padding: 35px; border-radius: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); min-height: 500px;">
+
+                    <!-- Account Tab -->
+                    <div id="account-tab" class="settings-sub-section active">
+                        <h2 style="margin-bottom: 25px;">Account & Security</h2>
+
+                        <div style="margin-bottom: 30px;">
+                            <h4
+                                style="font-size: 0.9rem; color: var(--text-light); border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 20px;">
+                                CHANGE PASSWORD</h4>
+                            <div style="display: flex; flex-direction: column; gap: 15px; max-width: 400px;">
+                                <div class="form-group">
+                                    <label>Current Password</label>
+                                    <input type="password" placeholder="••••••••">
+                                </div>
+                                <div class="form-group">
+                                    <label>New Password</label>
+                                    <input type="password" placeholder="Minimum 8 characters">
+                                </div>
+                                <button class="book-btn" style="width: fit-content;" onclick="saveSettingMsg()">Update
+                                    Password</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4
+                                style="font-size: 0.9rem; color: var(--text-light); border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 20px;">
+                                TWO-FACTOR AUTHENTICATION</h4>
+                            <div
+                                style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; padding: 20px; border-radius: 16px;">
+                                <div>
+                                    <p style="font-weight: 600;">Enable 2FA</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light);">Adds an extra layer of
+                                        security to your account.</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" onchange="saveSettingMsg()">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Tab -->
+                    <div id="notifications-tab" class="settings-sub-section" style="display: none;">
+                        <h2 style="margin-bottom: 25px;">Notification Preferences</h2>
+                        <div style="display: flex; flex-direction: column; gap: 20px;">
+                            <div
+                                style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
+                                <div>
+                                    <p style="font-weight: 600;">New Appointment Alerts</p>
+                                    <p style="font-size: 0.8rem; color: var(--text-light);">Get notified when a patient
+                                        books a slot.</p>
+                                </div>
+                                <label class="switch"><input type="checkbox" checked onchange="saveSettingMsg()"><span
+                                        class="slider round"></span></label>
+                            </div>
+                            <div
+                                style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
+                                <div>
+                                    <p style="font-weight: 600;">Secure Message SMS</p>
+                                    <p style="font-size: 0.8rem; color: var(--text-light);">Receive SMS for
+                                        high-priority messages.</p>
+                                </div>
+                                <label class="switch"><input type="checkbox" onchange="saveSettingMsg()"><span
+                                        class="slider round"></span></label>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <p style="font-weight: 600;">Email Daily Summary</p>
+                                    <p style="font-size: 0.8rem; color: var(--text-light);">Receive a summary of today's
+                                        schedule at 8:00 AM.</p>
+                                </div>
+                                <label class="switch"><input type="checkbox" checked onchange="saveSettingMsg()"><span
+                                        class="slider round"></span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Display Tab -->
+                    <div id="display-tab" class="settings-sub-section" style="display: none;">
+                        <h2 style="margin-bottom: 25px;">Display & Theme</h2>
+                        <div class="form-group" style="max-width:300px">
+                            <label>Interface Language</label>
+                            <select onchange="saveSettingMsg()">
+                                <option>English (US)</option>
+                                <option>Spanish</option>
+                                <option>French</option>
+                            </select>
+                        </div>
+                        <div
+                            style="display: flex; align-items: center; justify-content: space-between; background: #1e293b; color: white; padding: 20px; border-radius: 16px; margin-top: 30px;">
+                            <div>
+                                <p style="font-weight: 600;">Dark Office Mode</p>
+                                <p style="font-size: 0.85rem; color: #94a3b8;">Reduce eye strain during night shifts.
+                                </p>
+                            </div>
+                            <label class="switch"><input type="checkbox" onchange="saveSettingMsg()"><span
+                                    class="slider round"></span></label>
+                        </div>
+                    </div>
+
+                    <!-- Privacy Tab -->
+                    <div id="privacy-tab" class="settings-sub-section" style="display: none;">
+                        <h2 style="margin-bottom: 25px;">Privacy & Data</h2>
+                        <div
+                            style="background: #fffbeb; border: 1px solid #fef3c7; padding: 20px; border-radius: 16px; margin-bottom: 25px;">
+                            <h4 style="color: #92400e; margin-bottom: 10px;"><i
+                                    class="fa-solid fa-triangle-exclamation"></i> HIPAA Compliance</h4>
+                            <p style="font-size: 0.85rem; color: #b45309;">Ensure all patient data is handled according
+                                to healthcare regulations. Your account currently meets all security standards.</p>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                                <p style="font-weight: 600;">Share Analytics</p>
+                                <p style="font-size: 0.8rem; color: var(--text-light);">Allow sharing of anonymized
+                                    clinical data.</p>
+                            </div>
+                            <label class="switch"><input type="checkbox" onchange="saveSettingMsg()"><span
+                                    class="slider round"></span></label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. PROFILE SECTION -->
+        <div id="profile-section" class="section-container">
+            <div class="profile-banner"></div>
+            <div class="profile-header" style="position: relative; padding-top: 80px; align-items: flex-end;">
+                <div class="large-profile-img" id="prof-init"
+                    style="position: absolute; top: -60px; left: 40px; border: 5px solid white; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); width: 140px; height: 140px; font-size: 4rem;">
+                    DS</div>
+                <div class="profile-info" style="flex: 1;">
+                    <h2 id="prof-name" style="font-size: 2.2rem;">Dr. Sarah Smith</h2>
+                    <p id="prof-spec" style="font-weight: 500; color: var(--primary);">Senior Cardiologist & Head of
+                        Cardiology</p>
+                    <p style="color: var(--text-light); margin-top: 10px; max-width: 600px; line-height: 1.6;">Dedicated
+                        to providing world-class cardiovascular care with over 15 years of experience in clinical
+                        research and surgical procedures.</p>
+                </div>
+                <div style="margin-bottom: 20px; display: flex; gap: 12px;">
+                    <button class="book-btn" onclick="openModal('editProfileModal')"><i class="fa-solid fa-pen"></i>
+                        Edit Profile</button>
+                    <button class="book-btn"
+                        style="background: white; color: var(--text-main); border: 1px solid var(--border);"><i
+                            class="fa-solid fa-share-nodes"></i></button>
+                </div>
+            </div>
+
+
+
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px; margin-top: 30px;">
+                <!-- Left Sidebar Info -->
+                <div style="display: flex; flex-direction: column; gap: 25px;">
+                    <div class="info-card">
+                        <h4>Contact Information</h4>
+                        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div
+                                    style="width: 32px; height: 32px; border-radius: 8px; background: #eff6ff; color: var(--primary); display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.75rem; color: var(--text-light);">Email Address</p>
+                                    <p style="font-size: 0.9rem;">sarah.smith@healthcare.com</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div
+                                    style="width: 32px; height: 32px; border-radius: 8px; background: #fff1f2; color: #ef4444; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.75rem; color: var(--text-light);">Mobile Number</p>
+                                    <p style="font-size: 0.9rem;">+1 234 567 890</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div
+                                    style="width: 32px; height: 32px; border-radius: 8px; background: #f0fdf4; color: #10b981; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.75rem; color: var(--text-light);">Office/Clinic</p>
+                                    <p style="font-size: 0.9rem;">Wing A, 4th Floor, St. Mary's</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="info-card">
+                        <h4>Working Hours</h4>
+                        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;"><span>Mon -
+                                    Fri</span><span style="font-weight: 600;">08:00 - 17:00</span></div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                <span>Sat</span><span style="font-weight: 600;">09:00 - 13:00</span>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #ef4444;">
+                                <span>Sun</span><span style="font-weight: 600;">Emergency Only</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Detailed Info -->
+                <div style="display: flex; flex-direction: column; gap: 25px;">
+                    <div class="info-card">
+                        <h4>Expertise & Specializations</h4>
+                        <div style="margin-top: 15px;">
+                            <span class="expertise-tag">Interventional Cardiology</span>
+                            <span class="expertise-tag">Echocardiography</span>
+                            <span class="expertise-tag">Heart Failure Management</span>
+                            <span class="expertise-tag">Pediatric Cardiology</span>
+                            <span class="expertise-tag">Clinical Research</span>
+                            <span class="expertise-tag">Vascular Health</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="info-card">
+                        <h4>Professional Timeline</h4>
+                        <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 25px;">
+                            <div class="timeline-box">
+                                <div class="timeline-dot"></div>
+                                <h5 style="font-size: 1rem;">Chief of Cardiology</h5>
+                                <p style="font-size: 0.8rem; color: var(--primary);">2020 - Present • St. Mary Medical
+                                    Center</p>
+                                <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 5px;">leading the
+                                    specialized cardiology division and managing a team of 45 medical professionals.</p>
+                            </div>
+                            <div class="timeline-box">
+                                <div class="timeline-dot"></div>
+                                <h5 style="font-size: 1rem;">Senior Consultant Surgeon</h5>
+                                <p style="font-size: 0.8rem; color: var(--primary);">2015 - 2020 • City General Hospital
+                                </p>
+                                <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 5px;">Specialized in
+                                    complex bypass surgeries and valve replacement procedures.</p>
+                            </div>
+                            <div class="timeline-box">
+                                <div class="timeline-dot"></div>
+                                <h5 style="font-size: 1rem;">Medical Residency (Cardiology)</h5>
+                                <p style="font-size: 0.8rem; color: var(--primary);">2010 - 2015 • Johns Hopkins
+                                    University</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h4>Education & Certifications</h4>
+                        <ul
+                            style="list-style: none; margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <li style="display: flex; gap: 12px; align-items: center;">
+                                <i class="fa-solid fa-graduation-cap" style="color: var(--text-light);"></i>
+                                <span>MD from Harvard Medical School</span>
+                            </li>
+                            <li style="display: flex; gap: 12px; align-items: center;">
+                                <i class="fa-solid fa-certificate" style="color: #10b981;"></i>
+                                <span>Board Certified Cardiologist</span>
+                            </li>
+                            <li style="display: flex; gap: 12px; align-items: center;">
+                                <i class="fa-solid fa-award" style="color: #f59e0b;"></i>
+                                <span>NIH Research Excellence Award</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal: New Prescription -->
+    <div id="prescriptionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>New Prescription</h3>
+                <button class="close-modal" onclick="closeModal('prescriptionModal')">&times;</button>
+            </div>
+            <form onsubmit="event.preventDefault(); alert('Prescription Saved!'); closeModal('prescriptionModal')">
+                <div class="form-group">
+                    <label>Select Patient</label>
+                    <select required>
+                        <option>John Doe</option>
+                        <option>Alice Smith</option>
+                        <option>Robert Johnson</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Medication Name</label>
+                    <input type="text" placeholder="e.g., Paracetamol" required>
+                </div>
+                <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Dosage</label>
+                        <input type="text" placeholder="500mg">
+                    </div>
+                    <div class="form-group">
+                        <label>Duration</label>
+                        <input type="text" placeholder="7 Days">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Notes / Instructions</label>
+                    <textarea rows="3" placeholder="Take after meal..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Save & Print Prescription</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Patient Details -->
+    <div id="patientDetailModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3>Medical History: <span id="detail-patient-name">Patient Name</span></h3>
+                <button class="close-modal" onclick="closeModal('patientDetailModal')">&times;</button>
+            </div>
+            <div class="section-grid" style="grid-template-columns: 1fr 1fr;">
+                <div>
+                    <h4 style="margin-bottom: 10px; color: var(--text-light);">Vitals Overview</h4>
+                    <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="stat-card" style="padding: 10px;">
+                            <div class="stat-info">
+                                <h5>120/80</h5>
+                                <p>BP</p>
+                            </div>
+                        </div>
+                        <div class="stat-card" style="padding: 10px;">
+                            <div class="stat-info">
+                                <h5>72</h5>
+                                <p>HR</p>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 style="margin-top: 20px; margin-bottom: 10px; color: var(--text-light);">Past Diagnoses</h4>
+                    <p>• Chronic Asthma (Since 2020)<br>• Seasonal Allergies<br>• Mild Hypertension</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 10px; color: var(--text-light);">Recent Lab Results</h4>
+                    <div style="background: #f8fafc; padding: 15px; border-radius: 12px;">
+                        <p><strong>Blood Sugar:</strong> 5.6 (Normal)</p>
+                        <p><strong>LDL:</strong> 110 (Normal)</p>
+                        <p><strong>Iron:</strong> 45 (Low)</p>
+                    </div>
+                    <button class="book-btn" style="margin-top: 20px; width: 100%;">View Full Laboratory
+                        History</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Manual Appointment Entry -->
+    <div id="manualEntryModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3>Manual Appointment Entry</h3>
+                <button class="close-modal" onclick="closeModal('manualEntryModal')">&times;</button>
+            </div>
+            <form
+                onsubmit="event.preventDefault(); alert('New Appointment Added Successfully!'); closeModal('manualEntryModal')">
+                <div class="form-group">
+                    <label>Patient Full Name</label>
+                    <input type="text" placeholder="e.g., Robert Johnson" required>
+                </div>
+                <div class="form-group">
+                    <label>Patient ID (Optional)</label>
+                    <input type="text" placeholder="e.g., #P-1005">
+                </div>
+                <div class="form-group">
+                    <label>Visit Reason / Type</label>
+                    <select required>
+                        <option value="">Select Reason</option>
+                        <option>General Consultation</option>
+                        <option>Follow-up Visit</option>
+                        <option>Dental Checkup</option>
+                        <option>Orthopedic Review</option>
+                        <option>Neurological Exam</option>
+                        <option>Lab Result Review</option>
+                    </select>
+                </div>
+                <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" required value="2025-12-26">
+                    </div>
+                    <div class="form-group">
+                        <label>Time Slot</label>
+                        <input type="time" required value="14:00">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Appointment Priority</label>
+                    <div style="display: flex; gap: 20px; margin-top: 10px;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-weight: 400; cursor: pointer;">
+                            <input type="radio" name="priority" value="normal" checked> Normal
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; font-weight: 400; cursor: pointer;">
+                            <input type="radio" name="priority" value="urgent"> <span
+                                style="color: #ef4444;">Urgent</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Internal Notes</label>
+                    <textarea rows="3" placeholder="Additional details for clinical staff..."></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="button" class="book-btn" onclick="closeModal('manualEntryModal')"
+                        style="flex: 1; background: var(--bg-color); color: var(--text-main); border: 1px solid var(--border);">Cancel</button>
+                    <button type="submit" class="book-btn" style="flex: 2;">Confirm Appointment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Edit Profile -->
+    <div id="editProfileModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3>Edit Professional Profile</h3>
+                <button class="close-modal" onclick="closeModal('editProfileModal')">&times;</button>
+            </div>
+            <form onsubmit="handleProfileUpdate(event)">
+                <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="edit-name" value="Dr. Sarah Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Specialization</label>
+                        <input type="text" id="edit-spec" value="Senior Cardiologist & Head of Cardiology" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Professional Bio</label>
+                    <textarea id="edit-bio"
+                        rows="3">Dedicated to providing world-class cardiovascular care with over 15 years of experience in clinical research and surgical procedures.</textarea>
+                </div>
+                <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="edit-email" value="sarah.smith@healthcare.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input type="text" id="edit-phone" value="+1 234 567 890" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Office / Clinic Location</label>
+                    <input type="text" id="edit-location" value="Wing A, 4th Floor, St. Mary's">
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="button" class="book-btn" onclick="closeModal('editProfileModal')"
+                        style="flex: 1; background: var(--bg-color); color: var(--text-main); border: 1px solid var(--border);">Cancel</button>
+                    <button type="submit" class="book-btn" style="flex: 2;">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+    <script>
+        const tabs = {
+            'today': [
+                { name: 'John Doe', id: '#P-1001', type: 'General Consultation', reason: 'Fever', time: '09:00 AM', status: 'Arrived', color: '#e0f2fe', text: 'var(--primary)', initial: 'JD', icon: 'fa-suitcase-medical' },
+                { name: 'Alice Smith', id: '#P-1002', type: 'Dental', reason: 'Cleaning', time: '10:30 AM', status: 'In Transit', color: '#fef2f2', text: '#ef4444', initial: 'AS', icon: 'fa-tooth' },
+                { name: 'Robert J.', id: '#P-1003', type: 'Orthopedic', reason: 'Back Pain', time: '11:45 AM', status: 'Scheduled', color: '#f3e8ff', text: '#a855f7', initial: 'RJ', icon: 'fa-stethoscope' }
+            ],
+            'upcoming': [
+                { name: 'Emma Watson', id: '#P-1004', type: 'Neurology', reason: 'Migraine', time: 'Tomorrow, 10 AM', status: 'Confirmed', color: '#ecfdf5', text: '#10b981', initial: 'EW', icon: 'fa-brain' },
+                { name: 'Michael Kelly', id: '#P-1005', type: 'General', reason: 'Checkup', time: 'Dec 28, 11 AM', status: 'Confirmed', color: '#fffbeb', text: '#f59e0b', initial: 'MK', icon: 'fa-user-md' }
+            ],
+            'completed': [
+                { name: 'Sarah Wilson', id: '#P-0998', type: 'Pharmacy', reason: 'Refill', time: 'Yesterday', status: 'Completed', color: '#f1f5f9', text: '#475569', initial: 'SW', icon: 'fa-pills' },
+                { name: 'David Miller', id: '#P-0995', type: 'General', reason: 'Healthy', time: 'Dec 24', status: 'Completed', color: '#f1f5f9', text: '#475569', initial: 'DM', icon: 'fa-check-circle' }
+            ]
+        };
+
+        function switchTab(tabId) {
+            // Update UI Active State
+            ['today', 'upcoming', 'completed'].forEach(id => {
+                const btn = document.getElementById('btn-' + id);
+                if (id === tabId) {
+                    btn.classList.add('active');
+                    btn.style.color = 'var(--primary)';
+                } else {
+                    btn.classList.remove('active');
+                    btn.style.color = 'var(--text-light)';
+                }
+            });
+
+            const container = document.getElementById('appointment-list-container');
+            container.innerHTML = '';
+
+            tabs[tabId].forEach(apt => {
+                const card = `
+                    <div class="stat-card" style="flex-direction: row; align-items: center; padding: 20px; border: 1px solid var(--border); box-shadow: none; animation: fadeIn 0.3s ease;">
+                        <div class="profile-img" style="width: 50px; height: 50px; background: ${apt.color}; color: ${apt.text}; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">${apt.initial}</div>
+                        <div style="flex: 1; margin-left: 20px;">
+                            <h4 style="color: var(--text-main);">${apt.name} <span style="font-weight: 400; color: var(--text-light); font-size: 0.8rem;">${apt.id}</span></h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);"><i class="fa-solid ${apt.icon}" style="margin-right: 5px;"></i> ${apt.type} • ${apt.reason}</p>
+                        </div>
+                        <div style="text-align: right; margin-right: 30px;">
+                            <h4 style="color: ${tabId === 'today' ? 'var(--primary)' : 'var(--text-main)'};">${apt.time}</h4>
+                            <span class="status ${apt.status.toLowerCase().replace(' ', '-')}" style="font-size: 0.75rem;">${apt.status}</span>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            ${tabId === 'completed' ? '<button class="book-btn" style="background:var(--bg-color); color:var(--text-main); border:1px solid var(--border);">Summary</button>' :
+                        tabId === 'upcoming' ? '<button class="book-btn" style="background:var(--bg-color); color:var(--text-main); border:1px solid var(--border);">Reschedule</button>' :
+                            '<button class="book-btn" onclick="alert(\'Starting Consult with ' + apt.name + '\')">Start Consult</button>'}
+                            <button class="book-btn" style="background: var(--bg-color); color: var(--text-main); border: 1px solid var(--border);"><i class="fa-solid fa-ellipsis"></i></button>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        // Initialize with Today
+        window.addEventListener('load', () => switchTab('today'));
+
+        function showSection(sectionId) {
+            // Update Title/Subtext
+            const welcomeMsg = document.getElementById('welcome-msg');
+            const subMsg = document.getElementById('sub-msg');
+            const user = JSON.parse(localStorage.getItem('currentUser')) || { name: 'Dr. Smith' };
+
+            // Map section names to human titles
+            const titles = {
+                'dashboard': ['Dashboard Overview', `Welcome back, ${user.name}.`],
+                'appointments': ['Patient Appointments', 'Manage your daily schedule.'],
+                'patients': ['My Patients', 'View and manage patient history.'],
+                'prescriptions': ['Prescriptions', 'Recent medical prescriptions issued.'],
+                'messages': ['Messages', 'Secure communication with patients.'],
+                'settings': ['Settings', 'Manage your dashboard preferences.'],
+                'profile': ['My Profile', 'Professional professional information.']
+            };
+
+            [welcomeMsg.textContent, subMsg.textContent] = titles[sectionId];
+
+            // Toggle Sections
+            document.querySelectorAll('.section-container').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(sectionId + '-section').classList.add('active');
+
+            // Update Sidebar Active State
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+                if (link.innerHTML.toLowerCase().includes(sectionId)) link.classList.add('active');
+            });
+        }
+
+        // Initialize user info
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.role === 'doctor') {
+            document.getElementById('prof-name').textContent = user.name;
+            document.getElementById('prof-init').textContent = user.name.split(' ').map(n => n[0]).join('');
+            showSection('dashboard');
+        }
+
+        // Modal Logic
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function openPatientDetail(name) {
+            document.getElementById('detail-patient-name').innerText = name;
+            openModal('patientDetailModal');
+        }
+
+        function filterPatients(query) {
+            const rows = document.querySelectorAll('#patients-section tbody tr');
+            rows.forEach(row => {
+                const name = row.cells[1].innerText.toLowerCase();
+                if (name.includes(query.toLowerCase())) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        function selectChat(name, status) {
+            // Update Active State in List
+            document.querySelectorAll('.chat-list-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.querySelector('h4').textContent.includes(name)) item.classList.add('active');
+            });
+
+            // Update Header
+            document.getElementById('active-chat-name').textContent = name;
+            const statusEl = document.getElementById('active-chat-status');
+            statusEl.innerHTML = `<i class="fa-solid fa-circle" style="font-size: 0.5rem; margin-right: 5px;"></i> ${status}`;
+            statusEl.style.color = status === 'Online' ? '#10b981' : (status === 'Away' ? '#f59e0b' : '#94a3b8');
+
+            // Update Image placeholder
+            document.getElementById('active-chat-img').textContent = name.split(' ').map(n => n[0]).join('');
+
+            // Clear history and show system msg (Simulated)
+            const history = document.getElementById('chat-history');
+            history.innerHTML = `
+                <div style="align-self: center; background: white; padding: 5px 15px; border-radius: 100px; font-size: 0.75rem; color: var(--text-light); margin-bottom: 10px; border: 1px solid var(--border);">Conversation with ${name}</div>
+                <div style="background: white; padding: 15px; border-radius: 12px 12px 12px 2px; max-width: 70%; align-self: flex-start; border: 1px solid var(--border);">
+                    <p style="font-size: 0.95rem; color: var(--text-main);">Welcome to secure chat. How can I help you today?</p>
+                </div>
+            `;
+        }
+
+        function sendChat() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const history = document.getElementById('chat-history');
+            const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            // Create My Message
+            const msg = document.createElement('div');
+            msg.style.cssText = 'background: var(--primary); color: white; padding: 15px; border-radius: 12px 12px 2px 12px; max-width: 70%; align-self: flex-end; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.2); animation: fadeIn 0.3s ease;';
+            msg.innerHTML = `<p style="font-size: 0.95rem;">${text}</p><span style="font-size: 0.7rem; color: rgba(255,255,255,0.8); margin-top: 5px; display: block; text-align: right;">${now}</span>`;
+
+            history.appendChild(msg);
+            input.value = '';
+            history.scrollTop = history.scrollHeight;
+
+            // Simulated Response
+            setTimeout(() => {
+                const response = document.createElement('div');
+                response.style.cssText = 'background: white; padding: 15px; border-radius: 12px 12px 12px 2px; max-width: 70%; align-self: flex-start; border: 1px solid var(--border); animation: fadeIn 0.3s ease;';
+                response.innerHTML = `<p style="font-size: 0.95rem; color: var(--text-main);">Thank you for your message. I'll get back to you securely within 24 hours.</p><span style="font-size: 0.7rem; color: var(--text-light); margin-top: 5px; display: block; text-align: right;">${now}</span>`;
+                history.appendChild(response);
+                history.scrollTop = history.scrollHeight;
+            }, 1500);
+        }
+
+        // Handle Enter key for chat
+        document.getElementById('chat-input')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendChat();
+        });
+        // Settings Logic
+        function switchSettingsTab(tabId) {
+            document.querySelectorAll('.settings-tab').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            document.querySelectorAll('.settings-sub-section').forEach(sec => sec.style.display = 'none');
+            document.getElementById(tabId + '-tab').style.display = 'block';
+        }
+
+        function saveSettingMsg() {
+            const toast = document.createElement('div');
+            toast.style.cssText = 'position: fixed; bottom: 30px; right: 30px; background: #10b981; color: white; padding: 15px 25px; border-radius: 12px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); z-index: 9999; animation: slideIn 0.3s ease;';
+            toast.innerHTML = '<i class="fa-solid fa-check-circle" style="margin-right: 10px;"></i> Preference saved successfully!';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function handleProfileUpdate(event) {
+            event.preventDefault();
+
+            // Get Values
+            const name = document.getElementById('edit-name').value;
+            const spec = document.getElementById('edit-spec').value;
+            const bio = document.getElementById('edit-bio').value;
+            const email = document.getElementById('edit-email').value;
+            const phone = document.getElementById('edit-phone').value;
+            const location = document.getElementById('edit-location').value;
+
+            // Update UI Elements
+            document.getElementById('prof-name').textContent = name;
+            document.getElementById('prof-spec').textContent = spec;
+            document.querySelector('#profile-section .profile-info p:last-of-type').textContent = bio;
+
+            // Update Sidebar/Header Info
+            document.getElementById('user-name').textContent = name;
+            document.getElementById('prof-init').textContent = name.split(' ').map(n => n[0]).join('');
+
+            // Update Contact Info Card
+            const contactCard = document.querySelector('#profile-section .info-card');
+            if (contactCard) {
+                const paragraphs = contactCard.querySelectorAll('p');
+                if (paragraphs[1]) paragraphs[1].textContent = email;
+                if (paragraphs[3]) paragraphs[3].textContent = phone;
+                if (paragraphs[5]) paragraphs[5].textContent = location;
+            }
+
+            saveSettingMsg();
+            closeModal('editProfileModal');
+        }
+    </script>
+</body>
+
+</html>

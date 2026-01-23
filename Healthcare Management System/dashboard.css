@@ -1,0 +1,493 @@
+:root {
+    --primary: #0ea5e9;
+    --primary-dark: #0284c7;
+    --secondary: #64748b;
+    --bg-color: #f1f5f9;
+    --white: #ffffff;
+    --border: #e2e8f0;
+    --text-main: #0f172a;
+    --text-light: #64748b;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --sidebar-width: 260px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background: var(--bg-color);
+    min-height: 100vh;
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--white);
+    height: 100vh;
+    position: fixed;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 40px;
+}
+
+.nav-links {
+    list-style: none;
+    flex: 1;
+}
+
+.nav-links li {
+    margin-bottom: 8px;
+}
+
+.nav-links a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: var(--secondary);
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    background: #e0f2fe;
+    color: var(--primary);
+}
+
+.nav-links a i {
+    font-size: 1.2rem;
+}
+
+.logout-btn {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    color: var(--danger);
+    text-decoration: none;
+    /* font-weight: 600; */
+    border-radius: 12px;
+    transition: background 0.3s;
+}
+
+.logout-btn:hover {
+    background: #fef2f2;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    padding: 30px;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header-title h1 {
+    font-size: 1.8rem;
+    color: var(--text-main);
+}
+
+.header-title p {
+    color: var(--text-light);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.search-bar {
+    position: relative;
+    margin-right: 20px;
+}
+
+.search-bar input {
+    padding: 10px 16px 10px 40px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    outline: none;
+    width: 250px;
+    background: var(--white);
+    transition: border-color 0.3s;
+}
+
+.search-bar input:focus {
+    border-color: var(--primary);
+}
+
+.search-bar i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+}
+
+.profile-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #cbd5e1;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: var(--white);
+    padding: 24px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.icon-box {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.stat-info h3 {
+    font-size: 2rem;
+    color: var(--text-main);
+    line-height: 1.2;
+}
+
+.stat-info p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+/* Colors for icon boxes */
+.blue-bg {
+    background: #e0f2fe;
+    color: #0ea5e9;
+}
+
+.green-bg {
+    background: #dcfce7;
+    color: #10b981;
+}
+
+.purple-bg {
+    background: #f3e8ff;
+    color: #a855f7;
+}
+
+.orange-bg {
+    background: #ffedd5;
+    color: #f97316;
+}
+
+/* Sections */
+.section-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+.recent-appointments,
+.doctors-list,
+.health-metrics {
+    background: var(--white);
+    padding: 24px;
+    border-radius: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    font-size: 1.25rem;
+    color: var(--text-main);
+}
+
+.view-all {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    padding: 12px;
+    color: var(--text-light);
+    font-weight: 500;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+}
+
+td {
+    padding: 16px 12px;
+    border-bottom: 1px solid var(--bg-color);
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+.patient-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.patient-info img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e2e8f0;
+}
+
+.status {
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status.confirmed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status.pending {
+    background: #fef9c3;
+    color: #854d0e;
+}
+
+.status.cancelled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Right Panel Elements */
+.doctor-card,
+.metric-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--bg-color);
+}
+
+.doctor-card:last-child,
+.metric-item:last-child {
+    border-bottom: none;
+}
+
+.doc-info h4 {
+    font-size: 1rem;
+    color: var(--text-main);
+}
+
+.doc-info p {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.book-btn {
+    margin-left: auto;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(5px);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--white);
+    width: 100%;
+    max-width: 600px;
+    border-radius: 24px;
+    padding: 30px;
+    position: relative;
+    animation: slideUp 0.3s ease;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border);
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-light);
+}
+
+/* Charts (Simplified CSS implementation) */
+.chart-container {
+    height: 150px;
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.chart-bar {
+    flex: 1;
+    background: var(--primary);
+    border-radius: 6px 6px 0 0;
+    transition: height 1s ease;
+    position: relative;
+}
+
+.chart-bar:hover {
+    background: var(--primary-dark);
+}
+
+.chart-bar::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+/* Notification Badge */
+.notification-dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 10px;
+    height: 10px;
+    background: var(--danger);
+    border: 2px solid var(--white);
+    border-radius: 50%;
+}
+
+/* Form inputs in Modal */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .section-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+        /* In production would perform hamburger menu */
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
