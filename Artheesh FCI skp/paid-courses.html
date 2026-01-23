@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artheesh FCl - Paid Courses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .price-tag {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-image {
+            position: relative;
+        }
+
+        .buy-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 1rem;
+        }
+
+        .buy-btn:hover {
+            background-color: var(--secondary-hover);
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <span>Artheesh FCl</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="index.html"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
+                <li><a href="dashboard.html"><i class="fa-solid fa-book-open"></i> Free Courses</a></li>
+                <li><a href="paid-courses.html" class="active"><i class="fa-solid fa-crown"></i> Paid Courses</a></li>
+                <li><a href="contact.html"><i class="fa-solid fa-envelope"></i> Contact Us</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <button class="menu-toggle-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search premium courses...">
+            </div>
+            <div class="user-actions">
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-container">
+            <div class="section-header">
+                <h1>Premium Courses</h1>
+            </div>
+
+            <!-- Course Grid -->
+            <div class="course-grid">
+                <!-- Box 1: Swayam-NPTEl -->
+                <div class="course-card">
+                    <div class="card-body" style="text-align: center; padding: 1.5rem;">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--secondary-color);">
+                            Swayam-NPTEl</h3>
+                        <a href="https://swayam.gov.in/" target="_blank" class="resume-btn">View Course</a>
+                    </div>
+                </div>
+
+                <!-- Box 2: Eduprep -->
+                <div class="course-card">
+                    <div class="card-body" style="text-align: center; padding: 1.5rem;">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--secondary-color);">Eduprep
+                        </h3>
+                        <a href="https://www.eduprep.co/" target="_blank" class="resume-btn">View Course</a>
+                    </div>
+                </div>
+
+                <!-- Box 3: Internshala -->
+                <div class="course-card">
+                    <div class="card-body" style="text-align: center; padding: 1.5rem;">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--secondary-color);">Internshala
+                        </h3>
+                        <a href="https://trainings.internshala.com/" target="_blank" class="resume-btn">View Course</a>
+                    </div>
+                </div>
+
+                <!-- Box 4: Udemy -->
+                <div class="course-card">
+                    <div class="card-body" style="text-align: center; padding: 1.5rem;">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--secondary-color);">Udemy</h3>
+                        <a href="https://www.udemy.com/" target="_blank" class="resume-btn">View Course</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="sidebar-overlay"></div>
+    <script src="script.js"></script>
+</body>
+
+</html>

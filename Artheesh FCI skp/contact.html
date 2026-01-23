@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artheesh FCl - Contact Us</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .college-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .college-header h2 {
+            color: var(--secondary-color);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .college-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .certificate-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .cert-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid var(--primary-color);
+            transition: transform 0.3s;
+        }
+
+        .cert-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .cert-card.paid {
+            border-top-color: var(--secondary-color);
+        }
+
+        .cert-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .cert-card h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .cert-card ul {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .cert-card ul li {
+            margin-bottom: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+        }
+
+        .cert-card ul li i {
+            margin-right: 10px;
+            color: #4caf50;
+            font-size: 0.9rem;
+        }
+
+        .contact-box {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: #e8eaf6;
+            border-radius: 12px;
+            color: var(--secondary-color);
+        }
+
+        .contact-box h3 {
+            margin-bottom: 1rem;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <span>Artheesh FCl</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="index.html"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
+                <li><a href="dashboard.html"><i class="fa-solid fa-book-open"></i> Free Courses</a></li>
+                <li><a href="paid-courses.html"><i class="fa-solid fa-crown"></i> Paid Courses</a></li>
+                <li><a href="contact.html" class="active"><i class="fa-solid fa-envelope"></i> Contact Us</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <button class="menu-toggle-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="user-actions">
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-container">
+            <div class="college-header">
+                <h2>SKP Engineering College Analysis</h2>
+                <ul style="list-style: none; padding: 0; margin-top: 1.5rem; display: inline-block; text-align: left;">
+                    <li
+                        style="font-size: 1.1rem; color: var(--text-color); margin-bottom: 0.5rem; display: flex; align-items: flex-start;">
+                        <i class="fa-solid fa-circle-check"
+                            style="color: var(--primary-color); margin-top: 5px; margin-right: 12px;"></i>
+                        <span>This all course will be verified in your knowledge</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="college-header" style="margin-top: 2rem;">
+                <h2>Use This Website To Gain Your Knowledge</h2>
+                <ul
+                    style="list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; text-align: left; margin-top: 1.5rem; padding: 0 1rem;">
+                    <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                        <i class="fa-solid fa-check" style="color: var(--primary-color);"></i> <span>Access
+                            comprehensive free and paid courses.</span>
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                        <i class="fa-solid fa-check" style="color: var(--primary-color);"></i> <span>Learn from
+                            industry-leading experts.</span>
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                        <i class="fa-solid fa-check" style="color: var(--primary-color);"></i> <span>Flexible,
+                            self-paced learning schedule.</span>
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                        <i class="fa-solid fa-check" style="color: var(--primary-color);"></i> <span>Earn verified
+                            professional certificates.</span>
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                        <i class="fa-solid fa-check" style="color: var(--primary-color);"></i> <span>Hands-on projects
+                            and practical assignments.</span>
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                        <i class="fa-solid fa-check" style="color: var(--primary-color);"></i> <span>Interactive quizzes
+                            to test your skills.</span>
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                        <i class="fa-solid fa-check" style="color: var(--primary-color);"></i> <span>Community support
+                            and peer learning.</span>
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                        <i class="fa-solid fa-check" style="color: var(--primary-color);"></i> <span>Lifetime access to
+                            course materials.</span>
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                        <i class="fa-solid fa-check" style="color: var(--primary-color);"></i> <span>Career guidance and
+                            resume building.</span>
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                        <i class="fa-solid fa-check" style="color: var(--primary-color);"></i> <span>Regular content
+                            updates and new courses.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <div class="sidebar-overlay"></div>
+    <script src="script.js"></script>
+</body>
+
+</html>
