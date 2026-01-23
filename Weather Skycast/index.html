@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyCast | Premium Weather Insights</title>
+    <meta name="description"
+        content="Experience weather like never before with SkyCast. Get real-time updates, detailed forecasts, and stunning visualizations.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Leaflet CSS for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="loading">
+    <div class="background-overlay"></div>
+
+    <div class="app-container">
+        <!-- Header / Search -->
+        <header>
+            <div class="logo">
+                <i data-lucide="cloud-lightning" class="logo-icon"></i>
+                <h1>SkyCast</h1>
+            </div>
+            <div class="header-actions">
+                <div class="search-wrapper">
+                    <div class="search-bar">
+                        <i data-lucide="search" class="search-icon"></i>
+                        <input type="text" id="city-input" placeholder="Search city..." autocomplete="off">
+                    </div>
+                    <div id="search-suggestions" class="suggestions-dropdown hidden"></div>
+                </div>
+                <button id="location-btn" class="glass-btn">
+                    <i data-lucide="map-pin" size="18"></i>
+                    <span>Choose Location</span>
+                </button>
+            </div>
+            <div class="unit-toggle">
+                <span class="unit-label">°C</span>
+                <label class="switch">
+                    <input type="checkbox" id="unit-switch">
+                    <span class="slider round"></span>
+                </label>
+                <span class="unit-label">°F</span>
+            </div>
+        </header>
+
+        <main id="main-content">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="main-info">
+                    <h2 id="location-name">Detecting location...</h2>
+                    <p id="current-date">Monday, 30 December</p>
+                    <div class="temp-container">
+                        <span id="current-temp">--</span>
+                        <span class="unit">°</span>
+                    </div>
+                    <p id="weather-description">Clear Sky</p>
+                </div>
+                <div class="weather-visual">
+                    <div id="weather-icon-large">
+                        <i data-lucide="sun" size="120" stroke-width="1.5"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hourly Forecast Section -->
+            <section class="hourly-section">
+                <h3>Next 24 Hours</h3>
+                <div class="hourly-container" id="hourly-list">
+                    <!-- Hourly items will be injected here -->
+                </div>
+            </section>
+
+            <!-- Details Grid -->
+            <section class="details-grid">
+                <div class="detail-card">
+                    <div class="card-icon"><i data-lucide="droplets"></i></div>
+                    <div class="card-content">
+                        <span class="label">Humidity</span>
+                        <span class="value" id="humidity">--%</span>
+                    </div>
+                </div>
+                <div class="detail-card">
+                    <div class="card-icon"><i data-lucide="wind"></i></div>
+                    <div class="card-content">
+                        <span class="label">Wind Speed</span>
+                        <span class="value" id="wind-speed">-- km/h</span>
+                    </div>
+                </div>
+                <div class="detail-card">
+                    <div class="card-icon" id="uv-icon"><i data-lucide="sun"></i></div>
+                    <div class="card-content">
+                        <span class="label">UV Index</span>
+                        <span class="value" id="uv-index">--</span>
+                    </div>
+                </div>
+                <div class="detail-card">
+                    <div class="card-icon"><i data-lucide="sunrise"></i></div>
+                    <div class="card-content">
+                        <span class="label">Sunrise</span>
+                        <span class="value" id="sunrise">--:--</span>
+                    </div>
+                </div>
+                <div class="detail-card">
+                    <div class="card-icon"><i data-lucide="sunset"></i></div>
+                    <div class="card-content">
+                        <span class="label">Sunset</span>
+                        <span class="value" id="sunset">--:--</span>
+                    </div>
+                </div>
+                <div class="detail-card">
+                    <div class="card-icon"><i data-lucide="gauge"></i></div>
+                    <div class="card-content">
+                        <span class="label">Pressure</span>
+                        <span class="value" id="pressure">-- hPa</span>
+                    </div>
+                </div>
+                <div class="detail-card">
+                    <div class="card-icon"><i data-lucide="thermometer"></i></div>
+                    <div class="card-content">
+                        <span class="label">Feels Like</span>
+                        <span class="value" id="feels-like">--°</span>
+                    </div>
+                </div>
+                <div class="detail-card">
+                    <div class="card-icon"><i data-lucide="eye"></i></div>
+                    <div class="card-content">
+                        <span class="label">Visibility</span>
+                        <span class="value" id="visibility">-- km</span>
+                    </div>
+                </div>
+                <div class="detail-card">
+                    <div class="card-icon"><i data-lucide="cloud-rain"></i></div>
+                    <div class="card-content">
+                        <span class="label">Precipitation</span>
+                        <span class="value" id="precipitation">-- mm</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Forecast Section -->
+            <section class="forecast-section">
+                <h3>7-Day Forecast</h3>
+                <div class="forecast-container" id="forecast-list">
+                    <!-- Forecast items will be injected here -->
+                </div>
+            </section>
+
+            <!-- Map Section -->
+            <section class="map-section">
+                <div class="map-card glass-card">
+                    <div class="card-header">
+                        <div class="header-title">
+                            <i data-lucide="map"></i>
+                            <h3>Visual Location</h3>
+                        </div>
+                        <span class="map-hint">Live Google Map View</span>
+                    </div>
+                    <div id="map-preview" class="map-preview-container">
+                        <div class="map-placeholder">
+                            <i data-lucide="map-pin" size="40"></i>
+                            <p>Loading location view...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Map Modal -->
+        <div id="map-modal" class="modal-overlay hidden">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <i data-lucide="map-pin"></i>
+                        <h2>Choose Custom Location</h2>
+                    </div>
+                    <div class="modal-search-wrapper">
+                        <div class="modal-search-bar">
+                            <i data-lucide="search" size="16"></i>
+                            <input type="text" id="modal-search-input" placeholder="Search city or zip..."
+                                autocomplete="off">
+                            <button id="modal-locate-btn" class="icon-btn-small" title="Use current location">
+                                <i data-lucide="map-pin"></i>
+                            </button>
+                        </div>
+                        <div id="modal-search-suggestions" class="suggestions-dropdown hidden"></div>
+                    </div>
+                    <button id="close-modal" class="close-btn">&times;</button>
+                </div>
+
+                <div class="recent-locations-bar">
+                    <span class="recent-label">Recent:</span>
+                    <div id="recent-locations-list" class="recent-list">
+                        <!-- Polulated by JS -->
+                        <span class="no-recent">No recent searches</span>
+                    </div>
+                </div>
+
+                <div id="interactive-map" class="interactive-map-container"></div>
+                <div class="modal-footer">
+                    <p id="selection-name" class="selection-info">Click the map or search to pick a location.</p>
+                    <button id="confirm-map-location" class="glass-btn primary" disabled>
+                        <span>Confirm Selection</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loader Overlay -->
+        <div id="loader" class="loader-overlay hidden">
+            <div class="loader-content">
+                <div class="spinner"></div>
+                <p>Fetching weather insights...</p>
+            </div>
+        </div>
+
+        <!-- Leaflet JS -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script src="script.js"></script>
+        <script>
+            // Initialize Lucide icons
+            lucide.createIcons();
+        </script>
+</body>
+
+</html>
